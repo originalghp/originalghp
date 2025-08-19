@@ -1,0 +1,17 @@
+   h1 {
+                font-size: 2em;/*"Una vez y medio lo definido para el contenedor padre"*/
+                color:darkblue;
+                text-align: center;
+                background-color: aquamarine;
+            }
+
+    p.comentarios{
+                text-align: left;
+                font-size: 1em;
+                color:blue;
+                font-style: italic;
+                border-top-style:solid;
+                border-bottom-style:solid;
+                border-width:thin;
+                border-color: blue;
+            }

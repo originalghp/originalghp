@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css10DivsEnPila</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+        <style>
+        
+        h1 {
+            font-size: 2em;
+            color: darkblue;
+            text-align: center;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        div#estiloX {
+            background-color: aquamarine;
+            width: 75%;
+            height: 1100px;
+            margin: auto;
+            padding-top: 5%;
+        }
+
+        div#cajaConImagenDeFondo {
+                background-image: url('./Ceibo (Erythrina crista-galli).jpeg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: cover;
+                border-style: solid;
+                border-color: red;
+                margin: auto;
+                width: 50%;
+                height: 200px;
+                overflow: auto;
+                color: brown;
+                margin-bottom: 5%;
+                box-sizing: border-box;
+        }
+
+        div#estiloY {
+                background-color: coral;
+                background-position: center;
+                background-size: cover;
+                width: 50%;
+                height: 200px;
+                margin: auto;
+                box-shadow: 16px 8px 2px rgba(0, 0, 0, 0.5); 
+                margin-bottom: 5%;
+        }
+
+        @media (min-width: 1080px) {
+                div#estiloY {
+                    background-color: yellow;
+                }
+        }
+
+
+        @media (min-width: 600px) and (max-width: 1080px){
+                div#estiloY {
+                    background-color: lightgreen;
+                }
+        }
+
+
+        @media (max-width: 600px) {
+                div#estiloY {
+                    background-color: lightcyan;
+                }
+        }
+     
+        div#estiloZ{
+                background: radial-gradient(orange, white, pink);
+                width: 50%;
+                height: 200px;
+                margin: auto;
+                box-sizing: border-box;
+                margin-bottom: 5%;
+        }
+
+         div#estiloN{
+                background: linear-gradient(to bottom right, red, yellow);
+                width: 50%;
+                height: 200px;
+                margin: auto;
+                box-sizing: border-box;
+                margin-bottom: 5%;
+        }       
+
+        div#estiloP{
+                background: radial-gradient(orange, white, pink);
+                width: 50%;
+                height: 200px;
+                margin: auto;
+                box-sizing: border-box;
+                margin-bottom: 5%;
+        }
+
+        div#estiloT{
+                background: linear-gradient(45deg, red, yellow,pink);
+                width: 50%;
+                height: 200px;
+                margin: auto;
+                box-sizing: border-box;
+                box-shadow: 16px 8px 2px rgba(0, 0, 0, 0.5); 
+                margin-bottom: 5%;
+        }
+
+        </style>
+
+	</head>
+
+    <body>
+
+       <h1>Cajas en linea</h1>
+    <div id="estiloX">
+    <div id="estiloY">
+        <p>Indianapolis</p>
+        <p>Monaco</p>
+        <p>Hungaroring</p>
+    </div>
+    
+    <div id="estiloZ">Pintura abstracta</div>
+    
+    <div id="estiloN">
+    <div id="cajaConImagenDeFondo"></div>
+    </div>
+
+    <div id="estiloT">GRADIENTE Y SOMBRA</div>
+    </body>
+</html>

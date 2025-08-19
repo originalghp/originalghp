@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css01StyleEnHeader.html</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+	</head>
+
+    <header>
+
+        <style>
+
+            h1 {
+                font-size: 1.5em;/*"Una vez y medio lo definido para el contenedor padre"*/
+                color:darkblue;
+                text-align: center;
+                background-color: aquamarine;
+            }
+
+            p{
+                text-align: left;
+                font-size: 1em;
+                color:blue;
+                font-style: italic;
+                border-top-style:solid;
+                border-bottom-style:solid;
+                border-width:thin;
+                border-color: blue;
+            }
+
+        </style>
+    </header>
+
+	<body>
+
+        <h1>Declaraciones en bloque definidas entre etiquetas style
+
+        <h4> h1 {<br>font-size: 2em;/*"Una vez y medio lo definido para el contenedor padre"*/<br>color:darkblue;<br>
+        text-align: center;<br>background-color: aquamarine;<br>}</h4>   
+        
+        <h1>Todas las etiquetas con h1 tienen este estilo</h1>
+        <h1>La etiqueta h1 lleva todo el ancho del contenedor (por default lleva display de bloque)</h1>
+        <h1>La etiqueta h1 lleva texto en colo azul</h1>
+        <h1>El background de h1 lleva color aquamarine</h1>
+        <h1>El estilo definido para la etiqueta h1 indica que el texto estara centrado</h1>
+
+        <h4>p{<br>
+                text-align: left;<br>
+                font-size: 1em;<br>
+                color:blue;<br>
+                font-style:italic>;<br>
+                border-top-style:solid;<br>
+                border-bottom-style:solid;<br>
+                border-width:thin;<br>
+                border-color: blue;<br>
+            }<br></h4>
+
+        <p>Todos los textos con etiquetas p tienen este estilo definido dentro de la etiqueta style</p>
+        <p>Para los párrafos se define un estilo con estas características: Alineación a la izquierda</p>
+        <p>Tamaño de la letra de la misma medidad que la definida para el contenedor body</p>
+        <p>Color de letra azul</p>
+        <p>Estilo de fuente itálico</p>
+        <p>Borde: superior e inferior sólidos;finos y de color azul</p>
+
+    </body>
+
+</html>

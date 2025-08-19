@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css02SelectoresDeClase.html</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+<style>
+
+            .claseContenidoComun{
+                font-size:1em;
+                margin-bottom:20px;
+            }
+
+            p.claseAcotacion{
+                text-align: center;
+                font-size: 18px;
+                color:blue;
+                font-style: italic;
+                border-style: solid;
+                border-width: thin;
+                border-color: blue;
+            }
+
+            .claseResaltado{
+                font-size: 1.5em;
+                font-weight: bold;
+                background-color: yellow;
+            }  
+            
+            .claseAyuda{
+                width: 50%;
+                font-size: 1em;
+                font-weight: bold;
+                text-align: center;
+                color: darkgoldenrod;
+                font-style: italic;
+                border-style: solid;
+                border-width: thin;
+                border-color: darkgoldenrod;              
+            }
+
+            p#id1{
+                width:25%;
+                color:red;
+                font-style: italic; 
+                text-align: center;
+                border-style:solid;
+                border-width:thin;
+                border-color: red;
+            }
+
+            img.imagenAl50{width:50%}
+
+        </style>
+
+	</head>
+
+    <body>
+
+        <p class="claseAcotacion">La foto que veran al pie refleja el momento de depegue de la Mision Apolo 11" (uso de la claseAcotacion) </p><br>
+        <p class="claseResaltado">MISIÓN APOLO 11 - 1969 (uso de la claseResaltado)</p><br>
+        <p class="claseAyuda">Si quiere conocer mas acerca de la Misión Apolo 11 diríjase al sitio oficial de la NASA (uso de la claseAyuda)</p><br>
+        <p class="claseContenidoComun">Desde 1960 hasta 1969 se desarrolló el Programa Apolo, el proyecto culminó con la Misión Apolo 11 que, lanzada el 16 de julio de 1969, culminò con el aterrizaje del hombre en la Luna (uso de la claseContenidoComun)</p><br>
+        <p id="id1">La foto que vemos debajo corresponde al lanzamiento desd Cabo Kennedy. Julio 1969 (párrafo específico i="id úmico". No se trata de un selector de clase si no de un selector de elemento "#")</p>
+        <img src="C:\xampp\htdocs\ghp\Css\CssParte1\css02SelectoresDeClase\HELH-Despegue-apolo-11.jpg" class="imagenAl50"></image>
+
+    </body>
+</html>
