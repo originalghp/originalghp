@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css20DivsInternosRelativos</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        <style>  
+        html, body{
+                margin:0px;
+                padding: 0px;
+                box-sizing: border-box;
+                background-color: gray;
+        }
+                
+        h1 {
+                font-size: 2em;
+                color:darkblue;
+                text-align: left;
+                font-style: normal;
+                margin: 0;
+            }
+
+        p{
+                text-align: left;
+                font-size: 1em;
+                color: white;
+                font-style: normal;
+                margin-left: 4px;
+                word-wrap: break-word; /* permite cortar palabras largas */
+                white-space: normal; /* asegura que se ajuste al ancho */
+            }      
+
+        div#estiloX{
+                background-color: lightgray;
+                background-position: center;
+                background-size: cover;
+                width: 80%;
+                height: 1000px;
+                margin-left: 5%;
+                margin-top: 0px;
+                padding-left:0px; 
+                overflow: auto;
+        }
+
+        div.contenedorRelativoClase1{
+                position:relative;
+                margin-left:0% ;
+                margin-top:10px;
+                width: 80%;
+                height: 40px;
+                background-color: darkcyan;
+                color:beige;
+                font-style: initial;
+        }
+
+        div.contenedorRelativoClase2{
+                position:relative;
+                margin-left:25% ;
+                margin-top:10px;
+                width: 450px;
+                background-color: darkolivegreen;
+                color:beige;
+                font-style: initial;
+        }
+
+        div.contenedorRelativoClase3{
+                position:relative;
+                margin-left:45% ;
+                margin-top:10px;
+                height: 150px;
+                width: 450px;
+                background-color: darkblue;
+                color:yellow;
+                font-style: initial;
+                overflow: auto;
+        }
+
+        div.paraVentanaModal{
+                position:fixed;
+                background-color: goldenrod;
+                width:500px;
+                height:300px;
+                top:40%;
+                left:30%;
+                opacity: 0.5;
+                overflow-y:auto;
+                visibility:visible;
+                z-index:10;
+                color:black;
+                border-radius: 10px 0px 0px 0px;
+        }
+
+        #cajaConImagenDeFondo {
+            position: relative;
+            background-image: url('./Lotus79MartiniRacing2.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size:cover;
+            margin-left:25% ;
+            margin-top:10px;            
+            border: solid green;            
+            width: 50%;
+            height: 200px;
+            overflow: auto;
+            color: brown;
+        }
+        </style>
+
+	</head>
+
+        <body>
+
+        <div id="estiloX">
+            <div class="contenedorRelativoClase1"><h1>AUTOS QUE HICIERON HISTORIA</h1></div>
+            <div class="contenedorRelativoClase1"><h1>Acotado a autos de Fórmula 1</h1></div>
+            <div class="contenedorRelativoClase2"><p>TOP AUTOS</p></div>
+            <div class="contenedorRelativoClase2">
+                                                    <p>Lotus 79</p>
+                                                    <p>Ferrari 312T3</p>
+                                                    <p>Eagle-Weslake T1G</p>
+                                                    <p>Brabham BT46B "Ventilador"<p>
+                                                    <p>McLaren M23</p>
+                                                    </div>
+             <div class="contenedorRelativoClase3">
+                                                    <p>Red Bull RB9</p>
+                                                    <p>Ferrari SF70H</p>
+                                                    <p>Mercedes W11</p>
+                                                    <p>Masserati 250F<p>
+                                                    <p>Brawn GP BGP 001</p>
+                                                    <p>Alfa Romeo 159 "Alfetta"</p>
+                                                    <p>Renault R01></p>
+                                                    </div>
+            <div class="contenedorRelativoClase2">
+                                                    <p>Ferrari 641/2</p>
+                                                    <p>Lotus 99T</p>
+                                                    <p>Williams FW07C</p>
+                                                    <p>Brabham BT44B<p>
+                                                    <p>McLaren MP4/4</p>
+                                                    <p>Williams FW14B</p>
+                                                    <p>Benetton B194iv></p>
+                                                    </div>
+            <div id="cajaConImagenDeFondo"></div>
+            <div class="paraVentanaModal">A finales de la década de 1960, Jim Hall, de Chaparral, introdujo por primera vez el "efecto suelo" en las carreras de coches. A mediados de los años 70, los ingenieros de Lotus descubrieron que se podía hacer que todo el coche actuara como un ala gigante mediante la creación de una superficie aerodinámica en su parte inferior que haría que el aire que se moviera en relación con el coche lo empujara hacia la carretera. Aplicando otra idea de Jim Hall de su corredor deportivo Chaparral 2K, Gordon Murray diseñó el Brabham BT46B, que utilizaba un sistema de ventiladores accionados por separado para extraer el aire de la zona del faldón bajo el coche, creando una enorme carga aerodinámica. Tras los desafíos técnicos de otros equipos, fue retirado después de una sola carrera. A continuación, se introdujeron cambios en el reglamento para limitar las ventajas de los "efectos suelo": primero se prohibieron los faldones utilizados para contener la zona de baja presión y después se exigió un "suelo escalonado"</div>
+        </div> 
+        </body>
+</html>

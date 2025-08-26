@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css27FormsRWD</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <style>
+        html, body {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            background-color: black;
+            height: 100%;
+            font-family: system-ui;
+        }
+        
+        /* Contenedor principal */
+        .contenedor-principal {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        /* Cabecera */
+        header {
+            background-color: #062012;
+            color: yellowgreen;
+            text-align: center;
+            padding: 15px;
+            border-bottom: 2px solid green;
+        }
+        
+        h1 {
+            font-size: 2em;
+            color: yellowgreen;
+            margin: 0;
+        }
+        
+        .contenedor-formulario {
+            background-color: darkolivegreen;
+            border: solid 1px black; 
+            padding: 0px;
+        }
+        
+        /* Estilos para el formulario y sus elementos */
+        .fila-formulario {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-bottom: 0;
+            margin-left: 2px;
+        }
+        
+        .entrada {
+            /*flex-basis: 18%; /* Para 5 elementos por fila (100%/5 = 20%, con un pequeño margen) */
+            margin-bottom: 0;
+            height: 80px;
+            width: 250px;
+            border: solid 1px black;
+            /*min-width: 150px;*/
+        }
+        
+        label {
+            display: block;
+            color: yellowgreen;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        input, select {
+            width: 180px;
+            padding: 8px;
+            border: 1px solid black;
+            border-radius: 4px;
+            background-color: #062012;
+            color: yellowgreen;
+            box-sizing: border-box;
+        }
+        select, option {
+            background-color: #062012;
+            color: yellowgreen;
+        }
+        /* Área de botones */
+        .area-botones {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 20px;
+        }
+        
+        button {
+            background-color: darkgreen;
+            color: greenyellow;
+            border: 1px solid green;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: system-ui;
+            margin-bottom: 10px;
+        }
+        .grupo-input {
+            width: 250px;
+            height: 80px;
+            border: 1px solid black;
+        }
+
+        button:hover {
+            background-color: #062012;
+        }
+       
+        /* Pie de página */
+        footer {
+            background-color: #062012;
+            color: yellowgreen;
+            text-align: center;
+            padding: 10px;
+            border-top: 2px solid green;
+        }
+        
+        /* Media queries para responsividad */
+        @media (max-width: 1200px) {
+            .grupo-input {
+                flex-basis: 23%; /* 4 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .grupo-input {
+                flex-basis: 31%; /* 3 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .grupo-input {
+                flex-basis: 48%; /* 2 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .grupo-input {
+                flex-basis: 100%; /* 1 elemento por fila */
+            }
+        }
+        
+        /* Media queries para responsividad */
+        @media (max-width: 1200px) {
+            .entrada {
+                flex-basis: 23%; /* 4 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .entrada {
+                flex-basis: 31%; /* 3 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .entrada {
+                flex-basis: 48%; /* 2 elementos por fila */
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .entrada {
+                flex-basis: 100%; /* 1 elemento por fila */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-principal">
+        <header>
+            <h1>GIMNASIO TRIX</h1>
+            <h1>Solicitud de ingreso para prácticas deportivas</h1>
+        </header>
+        
+        <main>
+            <div class="contenedor-formulario">
+                <form action="#" method="post">
+                    <!-- Primera fila con 5 campos -->
+                    <div class="fila-formulario">
+                        <div class="entrada">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" value="" required>
+                        </div>
+
+                        <div class="entrada">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" id="apellido" name="apellido" value="" required>
+                        </div>
+
+                        <div class="entrada">
+                            <label for="dni">DNI</label>
+                            <input type="text" id="dni" name="dni" maxlength="8" pattern="\d{8}" autofocus required>
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="mascara">Máscara de red</label>
+                            <input type="text" id="mascara" name="mascara" placeholder="255.255.255.0" required>
+                        </div>
+                        
+                        <div class="grupo-input">
+                            <label for="gateway">Gateway</label>
+                            <input type="text" id="gateway" name="gateway" placeholder="192.168.1.254">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="dns">Servidor DNS</label>
+                            <input type="text" id="dns" name="dns" placeholder="8.8.8.8">
+                        </div>
+                   
+                        <div class="entrada">
+                            <label for="protocolo">Protocolo</label>
+                            <select id="protocolo" name="protocolo">
+                                <option value="tcp">TCP</option>
+                                <option value="udp">UDP</option>
+                                <option value="icmp">ICMP</option>
+                            </select>
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="puerto">Puerto</label>
+                            <input type="number" id="puerto" name="puerto" min="1" max="65535">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="velocidad">Velocidad (Mbps)</label>
+                            <input type="number" id="velocidad" name="velocidad" min="1" max="1000">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="ssid">SSID</label>
+                            <input type="text" id="ssid" name="ssid">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="seguridad">Seguridad</label>
+                            <select id="seguridad" name="seguridad">
+                                <option value="wpa2">WPA2</option>
+                                <option value="wpa3">WPA3</option>
+                                <option value="wep">WEP</option>
+                                <option value="none">Ninguna</option>
+                            </select>
+                        </div>
+  
+                        <div class="entrada">
+                            <label for="usuario">Usuario</label>
+                            <input type="text" id="usuario" name="usuario">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="password">Contraseña</label>
+                            <input type="password" id="password" name="password">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="fecha">Fecha configuración</label>
+                            <input type="date" id="fecha" name="fecha">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="notificaciones">Notificaciones</label>
+                            <select id="notificaciones" name="notificaciones">
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="backup">Backup automático</label>
+                            <select id="backup" name="backup">
+                                <option value="diario">Diario</option>
+                                <option value="semanal">Semanal</option>
+                                <option value="mensual">Mensual</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Área de botones -->
+                    <div class="area-botones">
+                        <button type="submit">Enviar</button>
+                        <button type="reset">Reset</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+        
+        <footer>
+            <p>Gimnasio TRIX sa. - Av. Schwarzenegger 37 - Los Delfines - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

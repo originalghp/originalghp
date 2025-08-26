@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css21DivsInternosAbsolutos</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        <style>  
+        html, body{
+                height: 100%;
+                margin:0px;
+                padding: 0px;
+                box-sizing: border-box;
+                background-color: black;
+        }
+                
+        h1 {
+                font-size: 2em;
+                color:darkblue;
+                text-align: left;
+                font-style: normal;
+                font-family: system-ui;
+                margin: 5px;
+            }
+
+        p{
+                text-align: left;
+                font-size: 1em;
+                color: white;
+                font-style: normal;
+                margin-left: 4px;
+                word-wrap: break-word; /* permite cortar palabras largas */
+                white-space: normal; /* asegura que se ajuste al ancho */
+            }      
+
+        div#estiloX{
+                background-color: lightskyblue;
+                background-position: center;
+                background-size: cover;
+                width: 90%;
+                height: 1000px;
+                margin-left: 5%;
+                margin-top: 0px;
+                padding-left:0px; 
+                overflow: auto;
+        }
+
+        div#contenedorInterno1{
+                position:absolute;
+                background-color: darkblue;
+                top:20%;
+                left:19%;
+                width:22%;
+                height:40%;
+                overflow:auto;
+                text-align: center;
+                color:yellowgreen;
+                font-family: Impact;
+                font-size:5vw; /*La letra responsiva o escalable (1% respecto al viewport)*/
+        }
+
+
+        div#contenedorInterno2{
+                position:absolute;
+                background-image: url('barcelona92.jfif');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size:cover;               
+                rotate: 25deg;
+                top:50%;
+                left:40%;
+                width:40%;
+                height:60%;
+                overflow:auto;
+                text-align: center;
+                color:yellowgreen;
+                font-family: Impact;
+                font-size:5vw; /*La letra responsiva o escalable (1% respecto al viewport)*/
+        }
+
+        div#contenedorInterno3{
+                position:absolute;
+                background-color: goldenrod;
+                opacity: 0.6;
+                top:35%;
+                left:15%;
+                width:70%;
+                height:40%;
+                overflow:auto;
+                text-align: center;
+                color:yellowgreen;
+                font-family: Impact;
+                font-size:5vw; /*La letra responsiva o escalable (1% respecto al viewport)*/
+                z-index:3; /*Queda por encima del que lleva valor 2*/
+        }
+
+        </style>
+	</head>
+
+        <body>      
+        <div id="estiloX">
+                <h1>Esto se adapta al medio de presentación</h1>   
+        <div id="contenedorInterno1">OLYMPICS</div>
+        <div id="contenedorInterno2"></div>
+        <div id="contenedorInterno3">B A R C E L O N A - 9 2</div>
+    </div>
+
+    </body>
+</html>

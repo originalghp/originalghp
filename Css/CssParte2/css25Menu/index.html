@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css25Menu</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        <style>  
+        html, body{
+                margin:0px;
+                padding: 0px;
+                box-sizing: border-box;
+                background-color: black;
+        }
+                
+        h1 {
+                font-size: 2em;
+                color:yellowgreen;
+                font-family:system-ui;
+                text-align: center;
+                font-style: system-ui;
+                margin-bottom: 20px;
+            }
+
+        p{
+                text-align: left;
+                font-size: 1em;
+                color: white;
+                font-style: normal;
+                margin-left: 4px;
+                word-wrap: break-word; /* permite cortar palabras largas */
+                white-space: normal; /* asegura que se ajuste al ancho */
+            }      
+           
+        #menu ul{
+            list-style: none;
+            margin: 0;
+            width: 100%;
+        }
+
+        #menu ul li{
+            background-color: darkgreen;
+            color: greenyellow;
+            font-family:system-ui;
+            width: 150px;
+            height: 30px;
+            border-right:solid;
+            border-bottom: solid;
+            border-style:groove;
+            border-color: green;
+            text-align: right;
+            padding-right: 5px;
+            padding-top: 8px;
+            border-radius: 6%;
+        }
+
+        #menu ul a{
+            display: block;
+            color: greenyellow;
+            width: 150px;            
+        }
+
+        #menu ul li{
+            position: relative;
+            float: left;
+            width: 150px;
+        }
+
+        #menu ul ul{ /*Lista desplegable*/
+            display: none;
+            position: absolute;
+            width: 142px;
+            margin-left: 5px;
+            top:100%;
+            left:-45px;
+        }
+
+        #menu ul ul li{  /*menu desplegable*/
+            float:none;
+            width: 142px;
+            margin-left: 5px;
+            
+        }
+
+        #menu ul ul a{
+            text-decoration: none;
+            font-size: 0.8em;
+            width: 142px;
+            margin-left: -5px;
+        }
+
+        #menu ul li:hover ul{ /*menu desplegable al pasar el raton*/
+            display:block;
+            text-decoration: none;
+        }
+
+        #menu ul li:hover {
+            background-color: #062012; /* Color diferente al pasar el cursor */
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+
+
+        #menu ul ul li:hover {
+             background-color: #062012; /* Color diferente para subitems */
+             text-decoration: none;
+        }
+
+        div#estiloX{ 
+                background-color: lightgray;
+                background-position: center;
+                background-size: cover;
+                width: 80%;
+                height: 1000px;
+                margin-left: 5%;
+                margin-top: 0px;
+                padding-left:0px; 
+                overflow: auto;
+        }
+
+        #cajaConImagenDeFondo {
+            position: relative;
+            background-image: url('./Lotus79MartiniRacing2.jpg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size:cover;
+            margin-left:25% ;
+            margin-top:10px;            
+            border: solid green;            
+            width: 50%;
+            height: 200px;
+            overflow: auto;
+            color: brown;
+        }
+        </style>
+
+	</head>
+
+        <body>
+
+        <nav id="menu">
+        <ul>
+            <li>HTML
+                <ul>
+                    <li> <a href="../../../Html/ejer01PreguntasHTTP/index.html">PreguntasHTTP</a></li>
+                    <li> <a href="../../../Html/eje02Tablas/index.html">Tablas</a></li>
+                    <li> <a href="../../../Html/ejer03Formularios/index.html">Formularios</a></li>
+                    <li> <a href="../../../Html/ejer04Iframe/index.html">Iframe</a></li>
+                </ul>
+            </li>
+            <li>Parte 1 CSS
+                <ul>
+                    <li><a href="../../CssParte1/css01StyleEnHeader/Index.html">Style en header</a></li>
+                    <li><a href="../../CssParte1/css02SelectoresDeClase/index.html">Selectores de clase</a></li>
+                    <li><a href="../../CssParte1/css03StyleEnFile/index.html">Style en fila</a></li>
+                    <li><a href="../../CssParte1/css04FontSize/index.html">Font size</a></li>
+                    <li><a href="../../CssParte1/css07BackgroundFijo/index.html">Background fijo</a></li>
+                    <li><a href="../../CssParte1/css08CentradoYPadding/index.html">Centrado y padding</a></li>
+                    <li><a href="../../CssParte1/css10DivsEnPila/index.html">Divs en pila</a></li>
+                    <li><a href="../../CssParte1/css11DivsEnFila/index.html">Divs en fila</a></li>
+                    <li><a href="../../CssParte1/css14DivsInternoEnColumnas/index.html">Divs internos columnas</a></li>
+                    <li><a href="../../CssParte1/css16SelectoresDeEvento/index.html">Selectores de eventos</a></li>
+                </ul>
+            <li>Parte 2 CSS                
+                <ul>            
+                    <li><a href="../ccs20DivsInternosRelativos/index.html">Divs internos relativos</a></li>
+                    <li><a href="../css21DivsInternosAbsolutos/index.html">Divs Internos Absolutos</a></li>
+                    <li><a href="../css22CentradoVerticalCajaFlex/index.html">Centrado Vert. Caja Flex</a></li>
+                    <li><a href="">Menú</a></li>
+                    <li><a href="../css27FormsRWD/index.html">Forms RWD</a></li>
+                    <li><a href="../css29TablasRWD/index.html">Tablas RWD</a></li>
+                    <li><a href="../css30LayoutBasico/index.html">Layout Basico</a></li>
+                    <li><a href="../css36LayoutResponsivo/index.html">Layout Responsivo</a></li> 
+                </ul>
+            <li>JavaScript
+                <ul>
+                    <li>XXXXXXXXXXXX</li>
+                    <li>YYYYYYYYYYYY</li>
+                    <li>ZZZZZZZZZZZZ</li>
+                </ul>
+            </li>
+            <li>PHP
+                <ul>
+                    <li>AAAAAAAAAAAA</li>
+                    <li>BBBBBBBBBBBB</li>
+                    <li>QQQQQQQQQQQQ</li>
+                </ul>
+            </li>
+            <li>Especiales
+                <ul>
+                    <li>AAAAAAAAAAA</li>
+                    <li>BBBBBBBBBBB</li>
+                    <li>CCCCCCCCCCC</li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+        </body>
+</html>

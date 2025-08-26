@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css22CentradoVerticalCajaFlex</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        <style>
+        body {
+                margin: 0;
+                font-family:system-ui;
+                background-color: lightgray;
+        }
+
+        .galeria {
+                display: flex; /* Permite flexibilizar el contenido reubicacdo y redimensionando elementos dentro del msmo en forma automatica */
+                justify-content: center; /* Permite centrar elementos al eje principal del flexbox */
+                align-items: center; /* Permite centrar en el eje secundario (siempre 90 grados del ppal)*/
+                justify-content: space-around; /* Permite centrar elementos pero separandolos entre ellos */
+                flex-direction: row; /*Define el eje ppal (en este caso horizontal)*/
+                flex-wrap: wrap;              /* Permite que bajen en pantallas pequeñas */
+                background-color:darkgray;
+                background-position: center;
+                background-size: cover;
+                width: 90%;
+                height: 600px;
+                margin-left: 5%;
+                margin-top: 0px;
+                padding-left:0px; 
+                overflow: auto;
+                }
+
+        .galeria img {
+                width: 300px;                 /* Tamaño fijo en escritorio */
+                background-size: cover;
+                border-radius: 12px;
+                } 
+
+        </style>
+        </head>
+
+        <body>                  
+                <div class="galeria">
+                        <img src="SaturnoV.jpg">
+                        <img src="HondaRocket.jpg">
+                        <img src="SpaceX.jpg">
+                </div>
+        </body>
+</html>
