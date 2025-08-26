@@ -15,14 +15,12 @@
             font-family: system-ui;
         }
         
-        /* Contenedor principal */
         .contenedor-principal {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
         
-        /* Cabecera */
         header {
             background-color: #062012;
             color: yellowgreen;
@@ -43,7 +41,6 @@
             padding: 0px;
         }
         
-        /* Estilos para el formulario y sus elementos */
         .fila-formulario {
             display: flex;
             flex-wrap: wrap;
@@ -53,12 +50,10 @@
         }
         
         .entrada {
-            /*flex-basis: 18%; /* Para 5 elementos por fila (100%/5 = 20%, con un pequeño margen) */
             margin-bottom: 0;
             height: 80px;
             width: 250px;
             border: solid 1px black;
-            /*min-width: 150px;*/
         }
         
         label {
@@ -81,8 +76,8 @@
             background-color: #062012;
             color: yellowgreen;
         }
-        /* Área de botones */
-        .boton {
+        
+        .boton {                    /* Área de botones */
             display: flex;
             justify-content: center;
             margin-top: 30px;
@@ -110,7 +105,7 @@
             background-color: #062012;
         }
        
-        /* Pie de página */
+  
         footer {
             background-color: #062012;
             color: yellowgreen;
@@ -119,53 +114,53 @@
             border-top: 2px solid green;
         }
         
-        /* Media queries para responsividad */
+
         @media (max-width: 1200px) {
             .grupo-input {
-                flex-basis: 23%; /* 4 elementos por fila */
+                width: 23%; 
             }
         }
         
         @media (max-width: 900px) {
             .grupo-input {
-                flex-basis: 31%; /* 3 elementos por fila */
+                width: 31%; 
             }
         }
         
         @media (max-width: 600px) {
             .grupo-input {
-                flex-basis: 48%; /* 2 elementos por fila */
+                width:  48%; 
             }
         }
         
         @media (max-width: 400px) {
             .grupo-input {
-                flex-basis: 100%; /* 1 elemento por fila */
+                width:  100%; 
             }
         }
         
-        /* Media queries para responsividad */
+
         @media (max-width: 1200px) {
             .entrada {
-                flex-basis: 23%; /* 4 elementos por fila */
+                width:  23%; 
             }
         }
         
         @media (max-width: 900px) {
             .entrada {
-                flex-basis: 31%; /* 3 elementos por fila */
+                width:  31%; 
             }
         }
         
         @media (max-width: 600px) {
             .entrada {
-                flex-basis: 48%; /* 2 elementos por fila */
+                width:  48%; 
             }
         }
         
         @media (max-width: 400px) {
             .entrada {
-                flex-basis: 100%; /* 1 elemento por fila */
+                width: 100%; 
             }
         }
     </style>
