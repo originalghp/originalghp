@@ -82,7 +82,7 @@
             color: yellowgreen;
         }
         /* Área de botones */
-        .area-botones {
+        .boton {
             display: flex;
             justify-content: center;
             margin-top: 30px;
@@ -90,7 +90,7 @@
         }
         
         button {
-            background-color: darkgreen;
+            background-color: rgb(1, 24, 1);
             color: greenyellow;
             border: 1px solid green;
             border-radius: 4px;
@@ -98,6 +98,7 @@
             cursor: pointer;
             font-family: system-ui;
             margin-bottom: 10px;
+            
         }
         .grupo-input {
             width: 250px;
@@ -178,8 +179,7 @@
         
         <main>
             <div class="contenedor-formulario">
-                <form action="#" method="post">
-                    <!-- Primera fila con 5 campos -->
+                <form action="./respuestaFormulario.html" target="_blank" method="get">
                     <div class="fila-formulario">
                         <div class="entrada">
                             <label for="nombre">Nombre</label>
@@ -195,56 +195,7 @@
                             <label for="dni">DNI</label>
                             <input type="text" id="dni" name="dni" maxlength="8" pattern="\d{8}" autofocus required>
                         </div>
-                        
-                        <div class="entrada">
-                            <label for="mascara">Máscara de red</label>
-                            <input type="text" id="mascara" name="mascara" placeholder="255.255.255.0" required>
-                        </div>
-                        
-                        <div class="grupo-input">
-                            <label for="gateway">Gateway</label>
-                            <input type="text" id="gateway" name="gateway" placeholder="192.168.1.254">
-                        </div>
-                        
-                        <div class="entrada">
-                            <label for="dns">Servidor DNS</label>
-                            <input type="text" id="dns" name="dns" placeholder="8.8.8.8">
-                        </div>
-                   
-                        <div class="entrada">
-                            <label for="protocolo">Protocolo</label>
-                            <select id="protocolo" name="protocolo">
-                                <option value="tcp">TCP</option>
-                                <option value="udp">UDP</option>
-                                <option value="icmp">ICMP</option>
-                            </select>
-                        </div>
-                        
-                        <div class="entrada">
-                            <label for="puerto">Puerto</label>
-                            <input type="number" id="puerto" name="puerto" min="1" max="65535">
-                        </div>
-                        
-                        <div class="entrada">
-                            <label for="velocidad">Velocidad (Mbps)</label>
-                            <input type="number" id="velocidad" name="velocidad" min="1" max="1000">
-                        </div>
-                        
-                        <div class="entrada">
-                            <label for="ssid">SSID</label>
-                            <input type="text" id="ssid" name="ssid">
-                        </div>
-                        
-                        <div class="entrada">
-                            <label for="seguridad">Seguridad</label>
-                            <select id="seguridad" name="seguridad">
-                                <option value="wpa2">WPA2</option>
-                                <option value="wpa3">WPA3</option>
-                                <option value="wep">WEP</option>
-                                <option value="none">Ninguna</option>
-                            </select>
-                        </div>
-  
+   
                         <div class="entrada">
                             <label for="usuario">Usuario</label>
                             <input type="text" id="usuario" name="usuario">
@@ -256,31 +207,98 @@
                         </div>
                         
                         <div class="entrada">
-                            <label for="fecha">Fecha configuración</label>
+                            <label for="fecha">Fecha de confección</label>
                             <input type="date" id="fecha" name="fecha">
                         </div>
                         
                         <div class="entrada">
-                            <label for="notificaciones">Notificaciones</label>
-                            <select id="notificaciones" name="notificaciones">
+                            <label for="ergo">Adjunta Ergometría</label>
+                            <select id="ergo" name="ergo" required>
                                 <option value="si">Sí</option>
                                 <option value="no">No</option>
                             </select>
                         </div>
+
+                        <div class="entrada">
+                            <label for="altura">Altura [m]</label>
+                            <input type="text" id="altura" name="altura" required>
+                        </div>
                         
                         <div class="entrada">
-                            <label for="backup">Backup automático</label>
-                            <select id="backup" name="backup">
-                                <option value="diario">Diario</option>
-                                <option value="semanal">Semanal</option>
-                                <option value="mensual">Mensual</option>
+                            <label for="peso">Peso [kg]</label>
+                            <input type="text" id="peso" name="peso" required>
+                        </div>
+
+                        <div class="entrada">             
+                            <label for="imc">IMC</label>
+                            <input type="number" id="imc" name="imc" min="18" max="45" step="0.1" required/>
+                        </div>
+
+                        <div class="entrada">
+                            <label for="cobertura">Cobertura Médica</label>
+                            <select id="cobertura" name="cobertura" required>
+                                <option value="si">Sí</option>
                                 <option value="no">No</option>
                             </select>
                         </div>
+
+                        <div class="entrada">
+                            <label for="prestador">Nombre Cobertura Médica</label>
+                            <input type="text" id="prestador" name="prestador" >
+                        </div>
+                         
+                        <div class="entrada">
+                            <label for="cardiaco">Antecedentes Cardíacos</label>
+                            <select id="cardiaco" name="cardiaco" required>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                            </select>    
+                        </div>
+
+                        <div class="entrada">
+                            <label for="alergico">Alérgico</label>
+                            <select id="alergico" name="alergico" required>
+                                <option value="si">Sí</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>    
+
+                        <div class="entrada">
+                            <label for="alergeno">Indique a que es alérgico</label>
+                            <input type="text" id="alergeno" name="alergeno" >
+                        </div>
+
+                        <div class="entrada">
+                            <label for="cuota">Membresía - cuota</label>
+                            <select id="cuota" name="cuota">
+                                <option value="mensual">Mensual</option>
+                                <option value="trimestral">Trimestral</option>
+                                <option value="semstral">Semestral</option>
+                                <option value="anual">Anual</option>
+                            </select>
+                        </div>
+
+                        <div class="entrada">
+                            <label for="pago">Medio de pago</label>
+                            <select id="pago" name="padding-bottom">
+                                <option value="tarjeta">Tarjeta de crédito</option>
+                                <option value="transferencia">Transferencia</option>
+                                <option value="efectivo">Efectivo</option>
+                            </select>
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="frecuencia">Días semanales de práctica</label>
+                            <input type="number" id="frecuencia" name="frecuencia" min="1" max="7">
+                        </div>
+                        
+                        <div class="entrada">
+                            <label for="locker">Nro. locker asignado</label>
+                            <input type="number" id="locker" name="locker" min="1" max="65">
+                        </div>
                     </div>
-                    
-                    <!-- Área de botones -->
-                    <div class="area-botones">
+                
+                    <div class="boton">
                         <button type="submit">Enviar</button>
                         <button type="reset">Reset</button>
                     </div>
