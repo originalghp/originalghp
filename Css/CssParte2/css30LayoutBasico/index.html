@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+	<head>
+		<title>css30LayoutBasico</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+        <style>  
+        /* Estilos generales del documento */
+        html, body {           
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family:system-ui;
+            color: white;
+        }
+
+          h1 {
+                font-size: 2em;
+                color:darkkhaki;
+                text-align: center;
+                font-style: normal;
+                font-family: system-ui;
+                margin: 5px;
+            }
+
+        .contenedorA {          /* Contenedor A de la maqueta contiene todos los elementos (body del doc) */
+            height: 100%;
+        }
+   
+        .contenedorB {          /* Contenedor B (Header) */
+            width: 100%;
+            height: 10%;
+            background-color: rgb(36, 3, 3);
+            color: darkkhaki;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box; /* cualquier padding o ancho de borde no afecta ancho y alto */
+        }
+        .contenedorD {          /* Contenedor D (Footer) */
+            width: 100%;
+            height: 10%;
+            background-color:  rgb(36, 3, 3);
+            color: darkkhaki;
+            text-align: center;
+            padding: 8px;
+            box-sizing: border-box; /* cualquier padding o ancho de borde no afecta ancho y alto */
+        }
+       
+        .contenedorC {         /* Contenedor C (nav + main) */
+            width: 100%;
+            height: 80%;
+            background-color: white;
+            display:block;
+        }
+
+
+        .contenedorE {          /* Contenedor E (nav) */
+            width: 10%;
+            height: 100%;
+            background-color: blue;
+            color:whitesmoke;
+            float: left;        /* debe flotar a  la izquierda */
+            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        
+        .contenedorF {          /* Contenedor F (main) */
+            width: 90%;
+            height: 100%;
+            background-color:rgb(65, 41, 41);
+            color:aquamarine;
+            float: left;        /* debe flotar a  la izquierda */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .contenedorF iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+            margin-top: 20px;
+            background-color: white;
+
+        }
+
+        .contenedorE ul{
+            list-style: none;
+            margin: 0;
+            padding-left: 10px;
+            width: 100%;
+        }
+
+        .contenedorE ul li{
+            background-color:rgb(65, 41, 41);
+            color: aquamarine;
+            font-family:system-ui;
+            width: 60px;
+            height: 30px;
+            border-right:solid;
+            border-bottom: solid;
+            border-style:groove;
+            border-color: aquamarine;
+            text-align: right;
+            padding-right: 5px;
+            padding-top: 8px;
+            border-radius: 6%;
+        }
+
+        .contenedorE ul a{
+            display: block;
+            color: aquamarine;
+            width: 100px;            
+        }
+
+        .contenedorE ul li{
+            position: relative;
+            float: left;
+            width: 100px;
+        }
+
+        .contenedorE ul li:hover ul{ /*menu desplegable al pasar el raton*/
+            display:block;
+            text-decoration: none;
+        }
+
+        .contenedorE ul li:hover {
+            background-color: rgb(218, 67, 67); /* Color diferente al pasar el cursor */
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="contenedorA">
+        <header class="contenedorB">
+            <h1>DISPLAY TV</h1>
+        </header>
+        
+        <div class="contenedorC">
+            <nav class="contenedorE">
+                <h3>MENÚ</h3>
+                    <ul>
+                        <li><a href="../../../Html/index.html" target="fcontenido">HTML</a></li>
+                        <li><a href="../../../Css/index.html" target="fcontenido">CSS</a></li>
+                        <li><a href="../../../Jscript/index.html" target="fcontenido">JScript</a></li>
+                        <li><a href="../../../Php/index.html"target="fcontenido">PHP</a></li>
+                    </ul>
+</nav>
+            <main class="contenedorF">
+                    <iframe src=iframe src="../../../Html/index.html" name="fcontenido">
+            </iframe>
+</main>
+        </div>
+        
+        <footer class="contenedorD">
+            <h1>ver todos los ejercicios</h1>
+        </footer>
+    </div>
+</body>
+</html>
