@@ -1,0 +1,10 @@
+{
+"NroDeCuotas":
+[
+{"Cod": "01", "Descrip": "uno"},
+{"Cod": "02", "Descrip": "dos"},
+{"Cod": "03", "Descrip": "tres"},
+{"Cod": "04", "Descrip": "cuatro"},
+{"Cod": "05", "Descrip": "cinco"},
+{"Cod": "06", "Descrip": "seis"}
+]  

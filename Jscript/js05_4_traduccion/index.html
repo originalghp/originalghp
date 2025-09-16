@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title></title>
+</head>
+<body>
+  <h1>Ejercicio 1: Lenguaje</h1>
+
+  <p><strong>Idiomas soportados por el navegador:</strong> <span id="lenguajes">—</span></p>
+  <p><strong>Bienvenida:</strong> <span id="mensaje">—</span></p>
+
+  <script>
+    
+    let lenguaje = window.navigator.languages;
+
+    
+    document.getElementById('lenguajes').textContent = lenguaje.join(', ');
+
+    let idioma= lenguaje[0].substr(0, 2);
+
+    if (idioma === 'es') {
+      mensaje = 'bienvenido a la clase de programacion en redes';
+    } else if (idioma === 'en') {
+      mensaje = 'welcome to network programming';
+    } else if (idioma === 'it') {
+      mensaje = 'diego la vuole nera';
+    } else {
+      mensaje = 'Idioma no reconocido: ' + langs[0];
+    }
+
+    document.getElementById('mensaje').textContent = mensaje;
+
+    
+
+
+  </script>
+</body>
+</html>

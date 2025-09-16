@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    body{font-family: Arial, sans-serif}
+    .box{background:#84b89d;border:2px solid #176291;padding:10px;margin:10px 0}
+    .ctrl button{margin-right:6px}
+    table{border-collapse:collapse}
+    th,td{border:1px solid #888;padding:4px 8px}
+    #presentacion{display:none}
+    .grid{display:grid;grid-template-columns:160px 1fr;gap:6px 10px;align-items:center}
+  </style>
+</head>
+<body>
+
+
+  <div class="box" id="ingreso">
+    <h2>Ingreso de datos de jugador</h2>
+    <div class="grid">
+      <label for="nombre">Nombre:</label>
+      <input id="nombre" type="text" required />
+
+      <label for="apellido">Apellido:</label>
+      <input id="apellido" type="text" required />
+
+      <label for="posicion">Posición:</label>
+      <select id="posicion" required>
+        <option value="">-- Seleccionar --</option>
+        <option>Arquero</option>
+        <option>Defensor</option>
+        <option>Mediocampista</option>
+        <option>Delantero</option>
+      </select>
+
+      <label for="fecha">Fecha de nacimiento:</label>
+      <input id="fecha" type="date" required />
+    </div>
+  </div>
+
+  
+  <div class="box" id="control">
+    <h2>Botones</h2>
+    <div class="ctrl">
+      <button id="btnCrear"  type="button">Crea jugador</button>
+      <button id="btnListar" type="button">Lista jugadores</button>
+      <button id="btnOculta" type="button">Oculta presentación</button>
+    </div>
+  </div>
+
+  
+  <div class="box" id="presentacion">
+    <h2>Presentación</h2>
+    <div id="tabla"></div>
+    <div id="info"></div>
+  </div>
+
+  <script>
+    
+    var jugadores = [];
+    jugadores.push({nombre:"Lionel", apellido:"Messi", posicion:"Defensor",      fechaNac:"1996-01-07"});
+    jugadores.push({nombre:"Pablo",  apellido:"Aimar",  posicion:"Mediocampista", fechaNac:"1995-01-17"});
+
+    
+    function listarJugadores() {
+      var contTabla = document.getElementById("tabla");
+      var info = document.getElementById("info");
+      var texto = "";
+
+      
+        texto = "<table><thead><tr>" +
+                "<th>#</th><th>Nombre</th><th>Apellido</th><th>Posición</th><th>Fecha Nac.</th>" +
+                "</tr></thead><tbody>";
+
+        jugadores.forEach(function(item, indice){
+          texto = texto + "<tr>";
+          texto = texto + "<td>" + (indice+1) + "</td>";
+          texto = texto + "<td>" + item.nombre   + "</td>";
+          texto = texto + "<td>" + item.apellido + "</td>";
+          texto = texto + "<td>" + item.posicion + "</td>";
+          texto = texto + "<td>" + item.fechaNac + "</td>";
+          texto = texto + "</tr>";
+        });
+
+        texto = texto + "</tbody></table>";
+        contTabla.innerHTML = texto;
+        info.innerHTML = "<h4>Cantidad de jugadores listados:" + jugadores.length + "</h4>";
+      
+
+     
+      document.getElementById("presentacion").style.display = "block";
+    }
+
+    
+    function crearJugador() {
+      var objNombre   = document.getElementById("nombre");
+      var objApellido = document.getElementById("apellido");
+      var objPosicion = document.getElementById("posicion");
+      var objFecha    = document.getElementById("fecha");
+
+      if (!objNombre.checkValidity() || !objApellido.checkValidity() ||
+          !objPosicion.checkValidity() || !objFecha.checkValidity()) {
+        return;
+      }
+
+      var nuevo = {
+        nombre:   objNombre.value,
+        apellido: objApellido.value,
+        posicion: objPosicion.value,
+        fechaNac: objFecha.value
+      };
+      jugadores.push(nuevo);
+
+      
+      objNombre.value = "";
+      objApellido.value = "";
+      objPosicion.value = "";
+      objFecha.value = "";
+    }
+
+    
+    function ocultarPresentacion() {
+      document.getElementById("presentacion").style.display = "none";
+    }
+
+    
+    window.addEventListener("load", function(){
+      document.getElementById("btnCrear").addEventListener("click", crearJugador);
+      document.getElementById("btnListar").addEventListener("click", listarJugadores);
+      document.getElementById("btnOculta").addEventListener("click", ocultarPresentacion);
+    });
+  </script>
+</body>
+</html>

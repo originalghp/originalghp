@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    body{font-family: Arial, sans-serif}
+    .box{background:#cfe9f4;padding:14px;max-width:640px}
+    .fila{margin:8px 0}
+    label{display:inline-block;width:160px}
+    input{padding:4px 6px}
+    .botones{margin-top:14px}
+  </style>
+</head>
+<body>
+  <h3>Formulario de ingreso de jugadores</h3>
+
+  <div class="box">
+    <form id="miForm">
+      <div class="fila">
+        <label for="apellido">Apellido:</label>
+        <input id="apellido" type="text" required maxlength="15" />
+      </div>
+
+      <div class="fila">
+        <label for="posicion">Posicion (ar, df, mc, dl):</label>
+        <input id="posicion" type="text" required maxlength="3" pattern="^(ar|df|mc|dl)$" />
+      </div>
+
+      <div class="fila">
+        <label for="dia">Dia:</label>
+        <input id="dia" type="number" required min="1" max="31" />
+      </div>
+
+      <div class="fila">
+        <label for="mes">Mes:</label>
+        <input id="mes" type="number" required min="1" max="11" />
+      </div>
+
+      <div class="fila">
+        <label for="anio">Año:</label>
+        <input id="año" type="number" required min="1950" max="2010" />
+      </div>
+
+      <div class="botones">
+        <input id="btEnviar" type="button" value="Enviar" disabled />
+        <input id="btReset"  type="button" value="Reset" />
+      </div>
+    </form>
+  </div>
+
+<script>
+  
+  function alertaPorCampo(obj, msg){
+    alert(msg);
+    obj.select(); 
+  }
+
+ 
+  window.addEventListener("load", function(){
+    var form      = document.getElementById("miForm");
+    var btEnviar  = document.getElementById("btEnviar");
+    var btReset   = document.getElementById("btReset");
+
+    var objApellido = document.getElementById("apellido");
+    var objPosicion = document.getElementById("posicion");
+    var objDia      = document.getElementById("dia");
+    var objMes      = document.getElementById("mes");
+    var objAño    = document.getElementById("año");
+
+    
+    btEnviar.disabled = true;
+
+    objApellido.addEventListener("keyup", function(){
+      if (!objApellido.checkValidity() && objApellido.value !== "") {
+        alertaPorCampo(objApellido, "Apellido invalido (max. 15).");
+      }
+      todoListo();
+    });
+
+    objPosicion.addEventListener("keyup", function(){
+      if (!objPosicion.checkValidity() && objPosicion.value !== "") {
+        alertaPorCampo(objPosicion, "Posicion debe ser: ar, df, mc o dl.");
+      }
+      todoListo();
+    });
+
+    objDia.addEventListener("keyup", function(){
+      if (!objDia.checkValidity() && objDia.value !== "") {
+        alertaPorCampo(objDia, "Dia entre 1 y 31.");
+      }
+      todoListo();
+    });
+
+    objMes.addEventListener("keyup", function(){
+      if (!objMes.checkValidity() && objMes.value !== "") {
+        alertaPorCampo(objMes, "Mes entre 1 y 11.");
+      }
+      todoListo();
+    });
+
+    objAño.addEventListener("keyup", function(){
+      if (!objAño.checkValidity() && objAño.value !== "") {
+        alertaPorCampo(objAño, "Año entre 1950 y 2010.");
+      }
+      todoListo();
+    });
+
+    
+    form.addEventListener("keyup", function(){
+      todoListo();
+    });
+
+    function todoListo(){
+      if (document.getElementById("miForm").checkValidity()) {
+        btEnviar.disabled = false;
+      } else {
+        btEnviar.disabled = true;
+      }
+    }
+
+    btReset.addEventListener("click", function(){
+      form.reset();
+      btEnviar.disabled = true; 
+      objApellido.select(); 
+    });
+  });
+</script>
+</body>
+</html>
