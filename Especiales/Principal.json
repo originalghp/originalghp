@@ -14,6 +14,6 @@
 {"ID_Contratos":"B72","DNI_Deudor":"26398299","Apellido_Nombres":"Lazarte, Mario","Monto_total_financiado":101900,"FechaContrato":"11-05-2025","NroDeCuotas":"03","QR":""},
 {"ID_Contratos":"T31","DNI_Deudor":"39612653","Apellido_Nombres":"Mansell, Nadia","Monto_total_financiado":96000,"FechaContrato":"18-05-2025","NroDeCuotas":"01","QR":""},
 {"ID_Contratos":"A21","DNI_Deudor":"12321848","Apellido_Nombres":"Nadal, Raul","Monto_total_financiado":527500,"FechaContrato":"23-05-2025","NroDeCuotas":"04","QR":""},
-{"ID_Contratos":"D38","DNI_Deudor":"32458625","Apellido_Nombres":"Ochoa, Laura","Monto_total_financiado":85000,"FechaContrato":"04-03-2025","NroDeCuotas":"03","QR":""}
+{"ID_Contratos":"D38","DNI_Deudor":"32458625","Apellido_Nombres":"Ochoa, Laura","Monto_total_financiado":85000,"FechaContrato":"04-06-2025","NroDeCuotas":"03","QR":""}
 ]
 }

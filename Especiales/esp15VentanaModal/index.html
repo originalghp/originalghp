@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>esp15VentanaModal</title>
+    <style>
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Times New Roman', Times, serif, sans-serif;
+        }
+        
+        /* Contenedor global */
+        .contenedor-global {
+            height: 100%;
+            background-color: lightblue;
+            display: flex;
+            align-items: flex-start;
+            padding: 20px;
+            position: relative;
+        }
+        
+        /* como esta el contenedor global */
+        div.contenedor-activo {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        
+        div.contenedor-desactivado {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        /* Botón para abrir v modal */
+        .boton-modal {
+            padding: 15px 25px;
+            background-color: #2e518b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .boton-modal:hover {
+            background-color: #1e3d6b;
+        }
+        
+        /* Ventana modal */
+        .ventana-modal {
+            position: fixed;
+            top: 10%;
+            left: 15%;
+            width: 70%;
+            height: auto;
+            max-height: 80%;
+            background-color: white;
+            border: 2px solid darkgray;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Como esta la ventana modal */
+        div.modal-visible {
+            visibility: visible;
+        }
+        
+        div.modal-oculto {
+            visibility: hidden;
+        }
+        
+        /* Encabezado de la v modal */
+        .encabezado-modal {
+            background-color: gray;
+            color: black;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .titulo-modal {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        
+        .boton-cerrar {
+            background-color: transparent;
+            color: red;
+            border-radius: 2px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .boton-cerrar:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* Contenido modal */
+        .contenido-modal {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: beige;
+            min-height: 0;
+        }
+        
+        /* Formulario dentro de la v modal */
+        .formulario-modal {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .contenido-formulario-modal {
+            flex: 0 0 auto;
+        }
+        
+        /* Estilos del formulario dentro del modal */
+        .entrada {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid darkgray;
+            border-radius: 2px;
+        }
+        
+        .barra-control {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            margin-top: 15px;
+        }
+        
+        .boton {
+            padding: 10px 20px;
+            background-color: darkgray;
+            color: black;
+            border-radius: 2px;
+            border: 1px solid black;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        
+        .boton:hover {
+            background-color: lightblue;
+        }
+        
+        /* Encabezado del formulario */
+        .encabezado-formulario {
+            background-color: #834644;
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.95em;
+        }
+        
+        .encabezado-formulario h2 {
+            font-size: 1em;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        /* foot v modal */
+        .pie-modal {
+            background-color: #834644;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        /* Media responsividad de la v modal */
+        @media (min-width: 900px) {
+            .contenido-formulario-modal {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
+            .entrada, .barra-control {
+                width: 48%;
+            }
+            
+            .barra-control {
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .ventana-modal {
+                top: 8%;
+                left: 10%;
+                width: 80%;
+                height: 84%;
+            }
+            
+            .entrada {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .ventana-modal {
+                top: 5%;
+                left: 5%;
+                width: 90%;
+                height: 90%;
+            }
+            
+            .titulo-modal {
+                font-size: 1em;
+            }
+            
+            .boton-modal {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .entrada {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .ventana-modal {
+                top: 2%;
+                left: 2%;
+                width: 96%;
+                height: 96%;
+            }
+            
+            .titulo-modal {
+                font-size: 0.7em;
+            }
+            
+            .encabezado-modal {
+                padding: 10px 15px;
+            }
+            
+            .contenido-modal {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor global -->
+    <div id="contenedorGlobal" class="contenedor-global contenedor-activo">
+        <button id="abrirModal" class="boton-modal">Abre DIV modal</button>
+    </div>
+    
+    <!-- Ventana modal -->
+    <div id="ventanaModal" class="ventana-modal modal-oculto">
+        <!-- Encabezado modal -->
+        <div class="encabezado-modal">
+            <div class="titulo-modal">Encabezado Modal</div>
+            <button id="cerrarModal" class="boton-cerrar">X</button>
+        </div>
+        
+        <!-- Encabezado del formulario -->
+        <div class="encabezado-formulario">
+            <h2>Formulario para Alta de "Contrato de Cuotas"</h2>
+        </div>
+        
+        <!-- Contenido modal -->
+        <div class="contenido-modal">
+            <form id="formContrato" class="formulario-modal">
+                <div class="contenido-formulario-modal">
+                    <div class="entrada">
+                        <label for="idContrato">ID Contrato:</label>
+                        <input type="text" id="idContrato" name="idContrato" required>
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="dniDeudor">DNI Deudor:</label>
+                        <input type="text" id="dniDeudor" name="dniDeudor" required>
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="apellidoNombres">Apellido y Nombres:</label>
+                        <input type="text" id="apellidoNombres" name="apellidoNombres" required>
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="montoTotal">Monto Total Financiado:</label>
+                        <input type="number" id="montoTotal" name="montoTotal" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="fechaContrato">Fecha de Contrato:</label>
+                        <input type="date" id="fechaContrato" name="fechaContrato" required>
+                    </div>
+                    
+                    <div class="entrada">
+                        <label for="nroCuotas">Número de Cuotas:</label>
+                        <select id="nroCuotas" name="nroCuotas" required>
+                            <!-- ver pdf especiales pag 6 -->
+                        </select>
+                    </div>
+                    
+                    <div class="barra-control">
+                        <button type="submit" id="submitBtn" class="boton">ENVIAR</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <!-- foot de vent modal -->
+        <div class="pie-modal">
+            Programación en entorno de redes - Especiales Ej03 - 2025
+        </div>
+    </div>
+
+    <script>
+        // JSON auxiliar con los parámetros de cuotas
+        var textoJSONCuotas = `{
+        "cuotas": [
+            {"Cod": "01", "Descrip": "Una"},
+            {"Cod": "02", "Descrip": "Dos"},
+            {"Cod": "03", "Descrip": "Tres"},
+            {"Cod": "04", "Descrip": "Cuatro"},
+            {"Cod": "05", "Descrip": "Cinco"},
+            {"Cod": "06", "Descrip": "Seis"}
+            ]
+            }`;
+ 
+        
+        // Función para mostrar advertencia de ancho de ventana al cargar
+        function cargaInicial() {
+            var ancho = screen.width;
+            alert("Localhost dice: Ancho de ventana: " + ancho);
+        }
+        
+        // Función para cargar las opciones del select desde JSON pdf especiales pg 6
+        function creaOpciones() {
+            var objJson = JSON.parse(textoJSONCuotas);
+            objJson.cuotas.forEach(function(argValor, argIndice) {
+                var objOpcion = document.createElement("option");
+                objOpcion.setAttribute("value", argValor.Cod);
+                objOpcion.innerHTML = argValor.Descrip;
+                document.getElementById("nroCuotas").appendChild(objOpcion);
+            });
+        }
+        
+        // Eventos cuando el documento está listo
+        window.addEventListener("load", function() {
+            cargaInicial();
+            creaOpciones();
+            
+            document.getElementById("abrirModal").addEventListener("click", function() {
+                document.getElementById("contenedorGlobal").className = "contenedor-global contenedor-desactivado";
+                document.getElementById("ventanaModal").className = "ventana-modal modal-visible";
+            });
+            
+            document.getElementById("cerrarModal").addEventListener("click", function() {
+                document.getElementById("contenedorGlobal").className = "contenedor-global contenedor-activo";
+                document.getElementById("ventanaModal").className = "ventana-modal modal-oculto";
+            });
+            
+            document.getElementById("formContrato").addEventListener("submit", function(event) {
+                event.preventDefault();
+                if (document.getElementById('formContrato').checkValidity()) {
+                    alert('Formulario validado correctamente. Enviando datos...');
+                } else {
+                    alert('Por favor, complete todos los campos requeridos correctamente.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
