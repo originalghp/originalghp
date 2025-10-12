@@ -82,8 +82,8 @@
 		</header>
 		
 		<ul> 
-			<li><a href="./ejer01Base/index.html">ejercicio01Base</a></li>
-			<li><a href="./ejer02inc/index.html">ejercicio02inc</a></li>
+			<li><a href="./ejer01Base/index.php">ejercicio01Base</a></li>
+			<li><a href="./ejer02inc/index.php">ejercicio02inc</a></li>
 			
 			<li>Plantilla</li>
 		</ul>
