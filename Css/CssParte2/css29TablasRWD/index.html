@@ -59,98 +59,122 @@
         }
 
         .table-ventana {
-            overflow-x: auto;
+            display: flex;
+            flex-direction: column;
             max-height: calc(100vh - 140px);
-            overflow-y: auto;
             margin: 0;
             border: 1px solid lightblue;
             border-radius: 5px;
+            overflow: hidden; /* Importante */
         }
+
+        /* THEAD fijo */
+        .thead-contenedor {
+            overflow: hidden;
+            padding-right: 17px; /* Compensar scrollbar */
+        }
+
+        /* TBODY con scroll */
+        .tbody-contenedor {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: auto; /* Para responsive horizontal */
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            table-layout: fixed; /* Importante para mantener anchos */
+            margin-bottom: 0; /* Quitar margen */
         }
+        
         th, td {
             padding: 12px 15px;
             font-size: 1em;
             text-align: center;
             border-bottom: solid lightblue;
             border-right: solid lightblue;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
+        
         th {
             background-color: #0066cc;
             color: lightcyan;
-            position: relative;
-            top: 0;
         }
-        tr:hover {
+        
+        /* Hover solo en tbody */
+        .tbody-contenedor tr:hover {
             background-color: black;
             color: yellowgreen;
         }
+
+        /* Definir anchos de columnas para mantener alineación */
+        th:nth-child(1), td:nth-child(1) { width: 8%; }   /* Amarra */
+        th:nth-child(2), td:nth-child(2) { width: 12%; }  /* Nombre */
+        th:nth-child(3), td:nth-child(3) { width: 8%; }   /* Bandera */
+        th:nth-child(4), td:nth-child(4) { width: 8%; }   /* Tipo */
+        th:nth-child(5), td:nth-child(5) { width: 15%; }  /* Matricula */
+        th:nth-child(6), td:nth-child(6) { width: 15%; }  /* Patrón */
+        th:nth-child(7), td:nth-child(7) { width: 8%; }   /* Eslora */
+        th:nth-child(8), td:nth-child(8) { width: 8%; }   /* Tripulantes */
+        th:nth-child(9), td:nth-child(9) { width: 18%; }  /* ETD */
+        th:nth-child(10), td:nth-child(10) { width: 18%; } /* ETA */
 
         @media screen and (max-width: 1000px) {
             body {
                 padding-top: 100px;
             }
+            
+            .thead-contenedor {
+                padding-right: 17px;
+            }
+            
             th, td {
                 padding: 8px 10px;
                 font-size: 11px;
             }
 
-            th:nth-child(3),
-            td:nth-child(3) {
-                display: none;
-            }
-
-            th:nth-child(4),
-            td:nth-child(4) {
-                display: none;
-            }
-
-            th:nth-child(7),
-            td:nth-child(7) {
+            /* Ocultar columnas en ambas tablas */
+            .thead-contenedor th:nth-child(3),
+            .tbody-contenedor td:nth-child(3),
+            .thead-contenedor th:nth-child(4),
+            .tbody-contenedor td:nth-child(4),
+            .thead-contenedor th:nth-child(7),
+            .tbody-contenedor td:nth-child(7) {
                 display: none;
             }
 
             footer {
                 font-size: 0.8em;
             }
-
         }
+        
         @media screen and (max-width: 700px) {
             body {
                 padding-top: 100px;
             }
+            
             th, td {
                 padding: 8px 10px;
                 font-size: 9px;
             }
 
-            th:nth-child(3),
-            td:nth-child(3) {
+            /* Ocultar más columnas */
+            .thead-contenedor th:nth-child(3),
+            .tbody-contenedor td:nth-child(3),
+            .thead-contenedor th:nth-child(4),
+            .tbody-contenedor td:nth-child(4),
+            .thead-contenedor th:nth-child(6),
+            .tbody-contenedor td:nth-child(6),
+            .thead-contenedor th:nth-child(7),
+            .tbody-contenedor td:nth-child(7) {
                 display: none;
             }
-
-            th:nth-child(4),
-            td:nth-child(4) {
-                display: none;
-            }
-
-            th:nth-child(6),
-            td:nth-child(6) {
-                display: none;
-            }
-
-            th:nth-child(7),
-            td:nth-child(7) {
-                display: none;
-            }
-
+  
             footer {
                 font-size: 0.5em;
             }
-
         }
     </style>
 </head>
@@ -161,157 +185,205 @@
     </header>
 
     <main>
-        <div class="table-ventana">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Amarra</th>
-                        <th>Nombre</th>
-                        <th>Bandera</th>
-                        <th>Tipo</th>
-                        <th>Matricula</th>
-                        <th>Patrón</th>
-                        <th>Eslora</th>
-                        <th>Tripulantes</th>
-                        <th>ETD</th>
-                        <th>ETA</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>C-8</td>
-                        <td>Vencedor</td>
-                        <td>ARG</td>
-                        <td>Velero</td>
-                        <td>REY-011458</td>
-                        <td>Lucas PERROT</td>
-                        <td>12.5</td>
-                        <td>4</td>
-                        <td>11/08/2025 08:00</td>
-                        <td>18/08/2025 15:34</td>
-                    </tr>
-                    <tr>
-                        <td>B-12</td>
-                        <td>Zonda</td>
-                        <td>ARG</td>
-                        <td>Lancha</td>
-                        <td>AC-5678-EF</td>
-                        <td>Antonio PETRELLI</td>
-                        <td>8.5</td>
-                        <td>3</td>
-                        <td>12/08/2025 06:30</td>
-                        <td>12/08/2025 16:00</td>
-                    </tr>
-                    <tr>
-                        <td>C-21</td>
-                        <td>Orientalsur</td>
-                        <td>URU</td>
-                        <td>Yate</td>
-                        <td>ROU-010902</td>
-                        <td>Mateo SUAREZ</td>
-                        <td>18.5</td>
-                        <td>5</td>
-                        <td>18/08/2025 09:00</td>
-                        <td>22/08/2025 09:30</td>
-                    </tr>
-                    <tr>
-                        <td>E-11</td>
-                        <td>Branca12</td>
-                        <td>BRA</td>
-                        <td>Velero</td>
-                        <td>BR-123339</td>
-                        <td>Roberto CARLOS</td>
-                        <td>10.8</td>
-                        <td>4</td>
-                        <td>21/08/2025 11:30</td>
-                        <td>23/08/2025 15:30</td>
-                    </tr>
-                    <tr>
-                        <td>D-09</td>
-                        <td>Ariana</td>
-                        <td>ARG</td>
-                        <td>Lancha</td>
-                        <td>REY-127841</td>
-                        <td>Fran DACON</td>
-                        <td>7.5</td>
-                        <td>2</td>
-                        <td>25/08/2025 06:00</td>
-                        <td>25/08/2025 18:15</td>
-                    </tr>
-                    <tr>
-                        <td>D-20</td>
-                        <td>Lagoadream</td>
-                        <td>BRA</td>
-                        <td>Yate</td>
-                        <td>BR-021234</td>
-                        <td>Joao NEYMAR</td>
-                        <td>20.3</td>
-                        <td>6</td>
-                        <td>27/08/2025 11:20</td>
-                        <td>30/08/2025 15:40</td>
-                    </tr>
-                    <tr>
-                        <td>A-11</td>
-                        <td>Brujilda</td>
-                        <td>ARG</td>
-                        <td>Velero</td>
-                        <td>REY-032119</td>
-                        <td>Gabriela DODERO</td>
-                        <td>14.5</td>
-                        <td>3</td>
-                        <td>01/09/2025 08:00</td>
-                        <td>01/09/2025 16:30</td>
-                    </tr>
-                    <tr>
-                        <td>F-05</td>
-                        <td>Luciernaga</td>
-                        <td>URU</td>
-                        <td>Lancha</td>
-                        <td>ROU-9078</td>
-                        <td>Lorenzo ZAMA</td>
-                        <td>9.1</td>
-                        <td>2</td>
-                        <td>03/09/2025 07:30</td>
-                        <td>03/09/2025 16:15</td>
-                    </tr>
-                    <tr>
-                        <td>C-18</td>
-                        <td>Galerna</td>
-                        <td>ARG</td>
-                        <td>Yate</td>
-                        <td>REY-009873</td>
-                        <td>Franco GALVAN</td>
-                        <td>14.5</td>
-                        <td>6</td>
-                        <td>05/09/2025 12:00</td>
-                        <td>08/09/2025 16:30</td>
-                    </tr>
-                    <tr>
-                        <td>E-14</td>
-                        <td>Fulanito</td>
-                        <td>ARG</td>
-                        <td>Velero</td>
-                        <td>REY-107890</td>
-                        <td>Julieta PINK</td>
-                        <td>16.7</td>
-                        <td>5</td>
-                        <td>08/09/2025 09:00</td>
-                        <td>10/09/2025 12:00</td>
-                    </tr>
-                    <tr>
-                        <td>A-14</td>
-                        <td>Mistral</td>
-                        <td>BRA</td>
-                        <td>Velero</td>
-                        <td>BR-119881</td>
-                        <td>Raul CAPABLANCA</td>
-                        <td>18</td>
-                        <td>6</td>
-                        <td>08/09/2025 11:00</td>
-                        <td>14/09/2025 11:00</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="contenedor">
+            <div class="table-ventana">
+                <!-- THEAD fijo -->
+                <div class="thead-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Amarra</th>
+                                <th>Nombre</th>
+                                <th>Bandera</th>
+                                <th>Tipo</th>
+                                <th>Matricula</th>
+                                <th>Patrón</th>
+                                <th>Eslora</th>
+                                <th>Tripulantes</th>
+                                <th>ETD</th>
+                                <th>ETA</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                
+                <!-- TBODY con scroll -->
+                <div class="tbody-contenedor">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>C-8</td>
+                                <td>Vencedor</td>
+                                <td>ARG</td>
+                                <td>Velero</td>
+                                <td>REY-011458</td>
+                                <td>Lucas PERROT</td>
+                                <td>12.5</td>
+                                <td>4</td>
+                                <td>11/08/2025 08:00</td>
+                                <td>18/08/2025 15:34</td>
+                            </tr>
+                            <tr>
+                                <td>B-12</td>
+                                <td>Zonda</td>
+                                <td>ARG</td>
+                                <td>Lancha</td>
+                                <td>AC-5678-EF</td>
+                                <td>Antonio PETRELLI</td>
+                                <td>8.5</td>
+                                <td>3</td>
+                                <td>12/08/2025 06:30</td>
+                                <td>12/08/2025 16:00</td>
+                            </tr>
+                            <tr>
+                                <td>C-21</td>
+                                <td>Orientalsur</td>
+                                <td>URU</td>
+                                <td>Yate</td>
+                                <td>ROU-010902</td>
+                                <td>Mateo SUAREZ</td>
+                                <td>18.5</td>
+                                <td>5</td>
+                                <td>18/08/2025 09:00</td>
+                                <td>22/08/2025 09:30</td>
+                            </tr>
+                            <tr>
+                                <td>E-11</td>
+                                <td>Branca12</td>
+                                <td>BRA</td>
+                                <td>Velero</td>
+                                <td>BR-123339</td>
+                                <td>Roberto CARLOS</td>
+                                <td>10.8</td>
+                                <td>4</td>
+                                <td>21/08/2025 11:30</td>
+                                <td>23/08/2025 15:30</td>
+                            </tr>
+                            <tr>
+                                <td>D-09</td>
+                                <td>Ariana</td>
+                                <td>ARG</td>
+                                <td>Lancha</td>
+                                <td>REY-127841</td>
+                                <td>Fran DACON</td>
+                                <td>7.5</td>
+                                <td>2</td>
+                                <td>25/08/2025 06:00</td>
+                                <td>25/08/2025 18:15</td>
+                            </tr>
+                            <tr>
+                                <td>D-20</td>
+                                <td>Lagoadream</td>
+                                <td>BRA</td>
+                                <td>Yate</td>
+                                <td>BR-021234</td>
+                                <td>Joao NEYMAR</td>
+                                <td>20.3</td>
+                                <td>6</td>
+                                <td>27/08/2025 11:20</td>
+                                <td>30/08/2025 15:40</td>
+                            </tr>
+                            <tr>
+                                <td>A-11</td>
+                                <td>Brujilda</td>
+                                <td>ARG</td>
+                                <td>Velero</td>
+                                <td>REY-032119</td>
+                                <td>Gabriela DODERO</td>
+                                <td>14.5</td>
+                                <td>3</td>
+                                <td>01/09/2025 08:00</td>
+                                <td>01/09/2025 16:30</td>
+                            </tr>
+                            <tr>
+                                <td>F-05</td>
+                                <td>Luciernaga</td>
+                                <td>URU</td>
+                                <td>Lancha</td>
+                                <td>ROU-9078</td>
+                                <td>Lorenzo ZAMA</td>
+                                <td>9.1</td>
+                                <td>2</td>
+                                <td>03/09/2025 07:30</td>
+                                <td>03/09/2025 16:15</td>
+                            </tr>
+                            <tr>
+                                <td>C-18</td>
+                                <td>Galerna</td>
+                                <td>ARG</td>
+                                <td>Yate</td>
+                                <td>REY-009873</td>
+                                <td>Franco GALVAN</td>
+                                <td>14.5</td>
+                                <td>6</td>
+                                <td>05/09/2025 12:00</td>
+                                <td>08/09/2025 16:30</td>
+                            </tr>
+                            <tr>
+                                <td>E-14</td>
+                                <td>Fulanito</td>
+                                <td>ARG</td>
+                                <td>Velero</td>
+                                <td>REY-107890</td>
+                                <td>Julieta PINK</td>
+                                <td>16.7</td>
+                                <td>5</td>
+                                <td>08/09/2025 09:00</td>
+                                <td>10/09/2025 12:00</td>
+                            </tr>
+                            <tr>
+                                <td>A-14</td>
+                                <td>Mistral</td>
+                                <td>BRA</td>
+                                <td>Velero</td>
+                                <td>BR-119881</td>
+                                <td>Raul CAPABLANCA</td>
+                                <td>18</td>
+                                <td>6</td>
+                                <td>08/09/2025 11:00</td>
+                                <td>14/09/2025 11:00</td>
+                            </tr>
+                            <!-- Filas adicionales para probar el scroll -->
+                            <tr>
+                                <td>B-15</td>
+                                <td>Neptuno</td>
+                                <td>ARG</td>
+                                <td>Yate</td>
+                                <td>REY-098765</td>
+                                <td>Maria FERNANDEZ</td>
+                                <td>22.1</td>
+                                <td>8</td>
+                                <td>15/09/2025 10:00</td>
+                                <td>20/09/2025 14:00</td>
+                            </tr>
+                            <tr>
+                                <td>C-22</td>
+                                <td>Sirena</td>
+                                <td>URU</td>
+                                <td>Velero</td>
+                                <td>ROU-112233</td>
+                                <td>Carlos MENDEZ</td>
+                                <td>15.8</td>
+                                <td>4</td>
+                                <td>18/09/2025 08:30</td>
+                                <td>22/09/2025 17:00</td>
+                            </tr>
+                            <tr>
+                                <td>A-07</td>
+                                <td>Aventura</td>
+                                <td>BRA</td>
+                                <td>Lancha</td>
+                                <td>BR-556677</td>
+                                <td>Pedro SILVA</td>
+                                <td>11.2</td>
+                                <td>5</td>
+                                <td>20/09/2025 07:00</td>
+                                <td>20/09/2025 19:30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
     
