@@ -1,4 +1,8 @@
 <?php
+// Mostrar errores para debugging (quitar en producción)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Verificar que se recibieron los datos (PDF PHP Parte 2 - Página 1)
 if (isset($_POST['codigoUsuario']) && isset($_POST['apellidoUsuario']) && isset($_POST['nombreUsuario'])) {
     
