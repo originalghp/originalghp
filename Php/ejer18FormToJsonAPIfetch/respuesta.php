@@ -1,12 +1,8 @@
 <?php
-// Mostrar errores para debugging (quitar en producción)
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-// Verificar que se recibieron los datos (PDF PHP Parte 2 - Página 1)
+// PDF PHP Parte 2 - Página 1
 if (isset($_POST['codigoUsuario']) && isset($_POST['apellidoUsuario']) && isset($_POST['nombreUsuario'])) {
     
-    // Leer datos del formulario (PDF PHP Parte 1 - Página 13)
+    // Leer datos del form (PDF PHP Parte 1 - Página 13)
     $codigoUsuario = $_POST['codigoUsuario'];
     $apellidoUsuario = $_POST['apellidoUsuario'];
     $nombreUsuario = $_POST['nombreUsuario'];
@@ -20,7 +16,7 @@ if (isset($_POST['codigoUsuario']) && isset($_POST['apellidoUsuario']) && isset(
     // Convertir a JSON (PDF PHP Parte 1 - Página 12)
     $jsonUsuario = json_encode($objUsuario);
 
-    // Mostrar JSON (PDF PHP Parte 1 - Página 12)
+    // Mostrar el JSON (PDF PHP Parte 1 - Página 12)
     echo $jsonUsuario;
     
 } else {
