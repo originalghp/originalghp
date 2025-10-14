@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario a Json API Fetch</title>
+</head>
+<body>
+    <form method="post" action="respuesta.php">
+        <ul>
+            <li>
+                codigo Usuario
+                <br/>
+                <input type="text" name="codigoUsuario">
+            </li>
+            <li>
+                Apellido de Usuario
+                <br/>
+                <input type="text" name="apellidoUsuario">
+            </li>
+            <li>
+                Nombre de usuario
+                <br/>
+                <input type="text" name="nombreUsuario">
+            </li>
+        </ul>
+        
+        <button type="submit">enviar form de manera tradicional</button>
+        <br/>
+        <button type="button">Disparar requerimiento asincronico AJAX</button>
+    </form>
+</body>
+</html>
