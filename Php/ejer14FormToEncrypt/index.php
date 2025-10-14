@@ -26,6 +26,7 @@ if (isset($_POST['clave'])) {
 <p>Ingrese la clave a encriptar:</p>
 <form method="post" action="index.php">
     <input type="text" name="clave" required>
+    </br>
     <button type="submit">Obtener encriptación</button>
 </form>
 <?php
