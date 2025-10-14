@@ -2,33 +2,44 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario con required y autofocus</title>
+    <title>Form to Encrypt</title>
 </head>
 <body>
-    <h1>Formulario de Login</h1>
+<?php
+// Verificar si se recibió el formulario
+if (isset($_POST['clave'])) {
+    // Procesar la encriptación
+    $claveOriginal = $_POST['clave'];
     
-    <form action="procesar.php" method="POST">
-        <p>
-            <label>Usuario:</label><br>
-            <input type="text" name="usuario" placeholder="Ingrese su usuario">
-        </p>
-        
-        <p>
-            <label>Clave:</label><br>
-            <input type="text" name="clave" placeholder="Ingrese su clave" required autofocus>
-        </p>
-        
-        <p>
-            <button type="submit">Enviar</button>
-        </p>
+    // Encriptar con MD5
+    $claveMd5 = md5($claveOriginal);
+    
+    // Encriptar con SHA1
+    $claveSha1 = sha1($claveOriginal);
+    
+    // Mostrar resultados
+    echo "<p><strong>Clave:</strong> " . htmlspecialchars($claveOriginal) . "</p>";
+    echo "<p><strong>Clave encriptada en md5</strong> (128 bits o 16 octetos o 16 pares hexadecimales):</p>";
+    echo "<p>" . $claveMd5 . "</p>";
+    echo "<br>";
+    
+    echo "<p><strong>Clave:</strong> " . htmlspecialchars($claveOriginal) . "</p>";
+    echo "<p><strong>Clave encriptada en sha1</strong> (160 bits o 20 octetos o 20 pares hexadecimales):</p>";
+    echo "<p>" . $claveSha1 . "</p>";
+    echo "<br>";
+    
+    echo "<a href='index.php'>Encriptar otra clave</a>";
+    
+} else {
+    // Mostrar formulario
+?>
+    <p>Ingrese la clave a encriptar:</p>
+    <form method="post" action="index.php">
+        <input type="text" name="clave" required>
+        <button type="submit">Obtener encriptación</button>
     </form>
-    
-    <hr>
-    
-    <h2>Explicación:</h2>
-    <ul>
-        <li><strong>autofocus:</strong> El cursor aparece automáticamente en el campo "Clave" al cargar la página</li>
-        <li><strong>required:</strong> No puedes enviar el formulario si el campo "Clave" está vacío</li>
-    </ul>
+<?php
+}
+?>
 </body>
 </html>
