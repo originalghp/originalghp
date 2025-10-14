@@ -1,35 +1,3 @@
-<?php
-// Verificar si se recibió el formulario con método POST
-if (isset($_POST['clave'])) {
-    // Leer la clave ingresada
-    $claveOriginal = $_POST['clave'];
-    
-    // Encriptar con MD5 (128 bits = 16 pares hexadecimales)
-    $claveMd5 = md5($claveOriginal);
-    
-    // Encriptar con SHA1 (160 bits = 20 pares hexadecimales)
-    $claveSha1 = sha1($claveOriginal);
-    
-    // Calcular longitudes
-    $longitudMd5 = strlen($claveMd5);
-    $longitudSha1 = strlen($claveSha1);
-    
-    // Contar octetos (cada par hexadecimal = 1 byte = 1 octeto)
-    $octetosMd5 = $longitudMd5 / 2;
-    $octetosSha1 = $longitudSha1 / 2;
-    
-    // Mostrar resultados
-    echo "<h3>Clave: " . htmlspecialchars($claveOriginal) . "</h3>";
-    echo "<h3>Clave encriptada en md5: <span style='color:blue'>" . $claveMd5 . "</span> (" . $longitudMd5 . " bits o " . $octetosMd5 . " octetos o " . $octetosMd5 . " pares hexadecimales):</h3>";
-    echo "<p>" . $claveMd5 . "</p>";
-    
-    echo "<h3>Clave: " . htmlspecialchars($claveOriginal) . "</h3>";
-    echo "<h3>Clave encriptada en sha256: <span style='color:blue'>" . $claveSha1 . "</span> (256 bits o 32 octetos o 32 pares hexadecimales):</h3>";
-    echo "<p>" . $claveSha1 . "</p>";
-    
-} else {
-    // Si no se recibió POST, mostrar el formulario
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,39 +5,123 @@ if (isset($_POST['clave'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form to Encrypt</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            padding: 20px;
+            line-height: 1.6;
         }
+        
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: normal;
+        }
+        
         form {
-            margin: 20px 0;
+            margin-bottom: 30px;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+        
         input[type="text"] {
-            padding: 5px;
-            width: 300px;
-            margin-bottom: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-right: 10px;
         }
+        
         button {
             padding: 5px 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #999;
+            border-radius: 3px;
             cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .resultado {
+            margin: 20px 0;
+        }
+        
+        .resultado p {
+            margin: 8px 0;
+        }
+        
+        .hash-valor {
+            color: blue;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        
+        .aclaracion {
+            color: #666;
+            font-size: 0.95em;
         }
     </style>
 </head>
 <body>
-    <h2>Ingrese la clave a encriptar:</h2>
-    <form method="post" action="index.php">
-        <label for="clave">Clave:</label>
-        <input type="text" id="clave" name="clave" required>
-        <br>
-        <button type="submit">Obtener encriptación</button>
-    </form>
+    <main>
+        <?php
+        // Verificar si se recibió el formulario
+        if (isset($_POST['clave'])) {
+            // Procesar la encriptación
+            $claveOriginal = $_POST['clave'];
+            
+            // Encriptar con MD5
+            $claveMd5 = md5($claveOriginal);
+            
+            // Encriptar con SHA1
+            $claveSha1 = sha1($claveOriginal);
+            
+            // Mostrar resultados
+            ?>
+            <section class="resultado">
+                <p><strong>Clave:</strong> <?php echo htmlspecialchars($claveOriginal); ?></p>
+                <p>
+                    <strong>Clave encriptada en md5</strong> 
+                    <span class="aclaracion">(128 bits o 16 octetos o 16 pares hexadecimales):</span>
+                </p>
+                <p class="hash-valor"><?php echo $claveMd5; ?></p>
+            </section>
+            
+            <section class="resultado">
+                <p><strong>Clave:</strong> <?php echo htmlspecialchars($claveOriginal); ?></p>
+                <p>
+                    <strong>Clave encriptada en sha1</strong> 
+                    <span class="aclaracion">(160 bits o 20 octetos o 20 pares hexadecimales):</span>
+                </p>
+                <p class="hash-valor"><?php echo $claveSha1; ?></p>
+            </section>
+            
+            <a href="index.php">
+                <button type="button">Encriptar otra clave</button>
+            </a>
+            <?php
+        } else {
+            // Mostrar formulario
+            ?>
+            <h1>Ingrese la clave a encriptar:</h1>
+            <form method="post" action="index.php">
+                <input type="text" name="clave" placeholder="Ingrese su clave" required autofocus>
+                <button type="submit">Obtener encriptación</button>
+            </form>
+            <?php
+        }
+        ?>
+    </main>
 </body>
 </html>
-<?php
-}
-?>
