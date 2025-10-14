@@ -6,38 +6,28 @@
 </head>
 <body>
 <?php
-// Verificar si se recibió el formulario
+
 if (isset($_POST['clave'])) {
-    // Procesar la encriptación
-    $claveOriginal = $_POST['clave'];
+    $claveAEncriptar = $_POST['clave'];
+    $claveMd5 = md5($claveAEncriptar);
+    $claveSha1 = sha1($claveAEncriptar);
     
-    // Encriptar con MD5
-    $claveMd5 = md5($claveOriginal);
-    
-    // Encriptar con SHA1
-    $claveSha1 = sha1($claveOriginal);
-    
-    // Mostrar resultados
-    echo "<p><strong>Clave:</strong> " . htmlspecialchars($claveOriginal) . "</p>";
-    echo "<p><strong>Clave encriptada en md5</strong> (128 bits o 16 octetos o 16 pares hexadecimales):</p>";
+    echo "<p>Clave: " . $claveAEncriptar . "</p>";
+    echo "<p>Clave encriptada en md5 (128 bits o 16 octetos o 16 pares hexadecimales):</p>";
     echo "<p>" . $claveMd5 . "</p>";
-    echo "<br>";
+    echo "<br/>";
     
-    echo "<p><strong>Clave:</strong> " . htmlspecialchars($claveOriginal) . "</p>";
-    echo "<p><strong>Clave encriptada en sha1</strong> (160 bits o 20 octetos o 20 pares hexadecimales):</p>";
+    echo "<p>Clave: " . $claveAEncriptar . "</p>";
+    echo "<p>Clave encriptada en sha1 (160 bits o 20 octetos o 20 pares hexadecimales):</p>";
     echo "<p>" . $claveSha1 . "</p>";
-    echo "<br>";
-    
-    echo "<a href='index.php'>Encriptar otra clave</a>";
     
 } else {
-    // Mostrar formulario
 ?>
-    <p>Ingrese la clave a encriptar:</p>
-    <form method="post" action="index.php">
-        <input type="text" name="clave" required>
-        <button type="submit">Obtener encriptación</button>
-    </form>
+<p>Ingrese la clave a encriptar:</p>
+<form method="post" action="index.php">
+    <input type="text" name="clave" required>
+    <button type="submit">Obtener encriptación</button>
+</form>
 <?php
 }
 ?>
