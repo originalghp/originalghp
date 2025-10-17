@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SECAP - Calculadora de Envíos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-title h1 {
+            font-size: 2.5rem;
+            color: #1f2937;
+        }
+
+        .header-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .card h2 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-label {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+        }
+
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .package-btn {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .package-btn:hover {
+            border-color: #818cf8;
+        }
+
+        .package-btn.active {
+            border-color: #4f46e5;
+            background: #eef2ff;
+        }
+
+        .package-btn-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+            font-size: 1.3rem;
+        }
+
+        .package-btn-info {
+            font-size: 1rem;
+            color: #6b7280;
+        }
+
+        .dimensions-panel {
+            background: #f9fafb;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dimensions-panel h3 {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
+        }
+
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 1.3rem;
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .calculate-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .calculate-btn:hover:not(:disabled) {
+            background: #4338ca;
+        }
+
+        .calculate-btn:disabled {
+            background: #d1d5db;
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .result-panel {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #eef2ff 0%, #dbeafe 100%);
+            border: 2px solid #c7d2fe;
+            border-radius: 0.5rem;
+            display: none;
+        }
+
+        .result-panel.show {
+            display: block;
+        }
+
+        .result-panel h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .result-icon {
+            padding: 0.75rem;
+            background: white;
+            border-radius: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .result-info-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .result-info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .footer p {
+            margin: 0.25rem 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .header-title h1 {
+                font-size: 2rem;
+            }
+
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Apartado solo para admin -->
+        <div id="admin-section" style="display:none; margin-bottom:2rem; text-align:right;">
+            <a href="../TablaDistancias/Index.php" target="_blank" style="background:#4f46e5;color:#fff;padding:0.7rem 1.2rem;border-radius:0.5rem;text-decoration:none;font-weight:600;">Ver tabla de distancias (solo admin)</a>
+        </div>
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">
+                <span style="font-size: 2.5rem;">📦</span>
+                <h1>SECAP</h1>
+            </div>
+            <p class="header-subtitle">Servicio de Cálculo de Envíos de Paquetes</p>
+        </div>
+
+        <!-- Main Card -->
+        <div class="card">
+            <h2>Calculá tu envío</h2>
+
+            <!-- Package Type Selection -->
+            <div class="section">
+                <label class="section-label">Tipo de paquete</label>
+                <div class="package-grid">
+                    <button class="package-btn active" data-type="small">
+                        <div class="package-btn-title">Pequeño</div>
+                        <div class="package-btn-info">20x15x10 cm</div>
+                        <div class="package-btn-info">1 kg</div>
+                    </button>
+                    <button class="package-btn" data-type="medium">
+                        <div class="package-btn-title">Mediano</div>
+                        <div class="package-btn-info">40x30x20 cm</div>
+                        <div class="package-btn-info">5 kg</div>
+                    </button>
+                    <button class="package-btn" data-type="large">
+                        <div class="package-btn-title">Grande</div>
+                        <div class="package-btn-info">60x40x30 cm</div>
+                        <div class="package-btn-info">10 kg</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Package Dimensions (for record keeping) -->
+            <div class="dimensions-panel">
+                <h3>Dimensiones del paquete (registro)</h3>
+                <div class="dimensions-grid">
+                    <div class="input-group">
+                        <label>Peso (kg)</label>
+                        <input type="number" id="weight" placeholder="0.0" step="0.1" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Alto (cm)</label>
+                        <input type="number" id="height" placeholder="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Ancho (cm)</label>
+                        <input type="number" id="width" placeholder="0" min="0">
+                    </div>
+                    <div class="input-group">
+                        <label>Largo (cm)</label>
+                        <input type="number" id="length" placeholder="0" min="0">
+                    </div>
+                </div>
+                <p style="font-size: 1rem; color: #6b7280; margin-top: 0.5rem;">
+                    💡 Estos datos son opcionales y se usan solo para registro interno
+                </p>
+            </div>
+
+            <!-- Origin (Fixed) -->
+            <div class="section">
+                <div class="input-group">
+                    <label>📍 Origen (Centro de distribución SECAP)</label>
+                    <input type="text" id="origin" value="Centro de distribución SECAP - CABA" readonly style="background: #f3f4f6; cursor: not-allowed;">
+                </div>
+            </div>
+
+            <!-- Destination -->
+            <div class="section">
+                <div class="input-group">
+                    <label>📍 Destino</label>
+                    <select id="destination">
+                        <option value="">Seleccioná el destino</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Calculate Button -->
+            <button id="calculateBtn" class="calculate-btn" disabled>
+                🧮 Calcular costo de envío
+            </button>
+
+            <!-- Results Panel -->
+            <div id="resultPanel" class="result-panel">
+                <h3>Resultado del cálculo</h3>
+                <div class="result-grid">
+                    <div class="result-item">
+                        <div class="result-icon">💵</div>
+                        <div>
+                            <div class="result-info-label">Costo total</div>
+                            <div class="result-info-value" id="resultCost">$0</div>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-icon">📦</div>
+                        <div>
+                            <div class="result-info-label">Peso</div>
+                            <div class="result-info-value" id="resultWeight">0 kg</div>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-icon">⏱️</div>
+                        <div>
+                            <div class="result-info-label">Tiempo estimado</div>
+                            <div class="result-info-value" id="resultDays">0 días</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Proyecto SECAP - Universidad de Belgrano</p>
+            <p>Grupo N° 2 - Tecnicatura en Programación de Computadoras</p>
+        </div>
+    </div>
+
+    <script>
+        // Mostrar el apartado solo si el usuario es admin
+        fetch('../get_user.php')
+            .then(res => res.json())
+            .then(data => {
+                if (data.username === 'admin') {
+                    document.getElementById('admin-section').style.display = 'block';
+                }
+            });
+
+        // Estado de la aplicación
+        let state = {
+            packageType: 'small',
+            weight: '',
+            height: '',
+            width: '',
+            length: '',
+            origin: 'Centro de distribución SECAP - CABA',
+            destination: ''
+        };
+
+        // Definición de tipos de paquetes
+        const packageTypes = {
+            small: { name: 'Pequeño', weight: 1, price: 3800 },
+            medium: { name: 'Mediano', weight: 5, price: 4300 },
+            large: { name: 'Grande', weight: 10, price: 5500 }
+        };
+
+        // Referencias a elementos del DOM
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultPanel = document.getElementById('resultPanel');
+        const packageBtns = document.querySelectorAll('.package-btn');
+
+        // Inputs
+        const weightInput = document.getElementById('weight');
+        const heightInput = document.getElementById('height');
+        const widthInput = document.getElementById('width');
+        const lengthInput = document.getElementById('length');
+        const destinationSelect = document.getElementById('destination');
+
+        // Event Listeners para botones de tipo de paquete
+        packageBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                packageBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                state.packageType = this.dataset.type;
+                validateForm();
+            });
+        });
+
+        // Event Listeners para inputs de dimensiones (opcional - solo para registro)
+        weightInput.addEventListener('input', (e) => {
+            state.weight = e.target.value;
+        });
+
+        heightInput.addEventListener('input', (e) => {
+            state.height = e.target.value;
+        });
+
+        widthInput.addEventListener('input', (e) => {
+            state.width = e.target.value;
+        });
+
+        lengthInput.addEventListener('input', (e) => {
+            state.length = e.target.value;
+        });
+
+        // Event Listener para destino
+        destinationSelect.addEventListener('change', (e) => {
+            state.destination = e.target.value;
+            validateForm();
+        });
+
+        // Validación del formulario
+        function validateForm() {
+            const isValid = state.destination !== '';
+            calculateBtn.disabled = !isValid;
+        }
+
+        // Cálculo del envío
+        calculateBtn.addEventListener('click', function() {
+            this.textContent = '⏳ Calculando...';
+            this.disabled = true;
+
+            setTimeout(() => {
+                // Datos del paquete
+                let weight = parseFloat(state.weight) || packageTypes[state.packageType].weight;
+                let height = parseFloat(state.height) || 0;
+                let width = parseFloat(state.width) || 0;
+                let length = parseFloat(state.length) || 0;
+
+                // Precio base según tipo de paquete
+                let basePrice = packageTypes[state.packageType].price;
+
+                // Datos del destino
+                const distanceData = calculateDistance(state.destination);
+                const distanceKm = distanceData.distance;
+                const zone = distanceData.zone;
+
+                // Cálculo
+                let distanceCost = distanceKm * 50; // $50 por km
+                let zoneSurcharge = 0;
+                let weightSurcharge = 0;
+                let volumeSurcharge = 0;
+
+                // Recargo por zona alejada
+                if (zone === 'GBA Alejado') {
+                    zoneSurcharge = 1200;
+                } else if (zone === 'GBA Zona Norte') {
+                    zoneSurcharge = 600;
+                }
+
+                // Recargo por exceso de peso (>10kg)
+                if (weight > 10) {
+                    weightSurcharge = Math.round((weight - 10) * 200);
+                }
+
+
+                // Cálculo final
+                const finalCost = Math.round(basePrice + distanceCost + zoneSurcharge + weightSurcharge + volumeSurcharge);
+
+                // Calcular tiempo estimado: 1 día base + 1 día cada 10km + 1 día extra si zona alejada
+                let estimatedDays = Math.max(1, Math.ceil(1 + (distanceKm / 10)));
+                if (zone === 'GBA Alejado') estimatedDays += 1;
+
+                // Mostrar resultados con desglose
+                document.getElementById('resultCost').innerHTML =
+                    `<b>$${finalCost.toLocaleString('es-AR')}</b><br>` +
+                    `<small style="font-size:0.95rem;">Base: $${basePrice} + Distancia: $${distanceCost} + Zona: $${zoneSurcharge} + Peso extra: $${weightSurcharge}</small>`;
+
+                document.getElementById('resultWeight').textContent = weight.toFixed(1) + ' kg';
+                document.getElementById('resultDays').innerHTML = estimatedDays + ' días<br><small style="font-size: 0.8rem; font-weight: 400;">(' + distanceKm + ' km - ' + zone + ')</small>';
+
+                // Log de dimensiones registradas (opcional)
+                if (state.weight || state.height || state.width || state.length) {
+                    console.log('Dimensiones registradas:', {
+                        peso: state.weight + ' kg',
+                        alto: state.height + ' cm',
+                        ancho: state.width + ' cm',
+                        largo: state.length + ' cm',
+                    });
+                }
+
+                resultPanel.classList.add('show');
+
+                this.textContent = '🧮 Calcular costo de envío';
+                this.disabled = false;
+            }, 800);
+        });
+
+        // Variables globales para datos de la BD
+        let destinationsData = null;
+        let zonesData = null;
+
+        // Cargar datos iniciales
+        async function loadInitialData() {
+            try {
+                // Cargar destinos
+                const destResponse = await fetch('get_data.php?action=all_destinations');
+                destinationsData = await destResponse.json();
+                
+                // Cargar zonas
+                const zonesResponse = await fetch('get_data.php?action=zones');
+                zonesData = await zonesResponse.json();
+                
+                // Actualizar el select de destinos
+                updateDestinationSelect();
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+            }
+        }
+
+        // Actualizar el select de destinos con datos de la BD
+        function updateDestinationSelect() {
+            const select = document.getElementById('destination');
+            select.innerHTML = '<option value="">Seleccioná el destino</option>';
+
+            // Crear optgroup para CABA
+            if (destinationsData.caba && destinationsData.caba.length > 0) {
+                const cabaGroup = document.createElement('optgroup');
+                cabaGroup.label = 'CABA - Barrios';
+                destinationsData.caba.forEach(dest => {
+                    const option = document.createElement('option');
+                    option.value = dest.name;
+                    option.textContent = dest.name;
+                    cabaGroup.appendChild(option);
+                });
+                select.appendChild(cabaGroup);
+            }
+
+            // Crear optgroup para GBA Norte
+            if (destinationsData.gba_norte && destinationsData.gba_norte.length > 0) {
+                const gbaGroup = document.createElement('optgroup');
+                gbaGroup.label = 'Zona Norte - GBA';
+                destinationsData.gba_norte.forEach(dest => {
+                    const option = document.createElement('option');
+                    option.value = dest.name;
+                    option.textContent = dest.name;
+                    gbaGroup.appendChild(option);
+                });
+                select.appendChild(gbaGroup);
+            }
+        }
+
+        // Función para obtener datos del destino de la BD
+        function calculateDistance(destination) {
+            // Buscar en CABA
+            let destData = destinationsData.caba.find(d => d.name === destination);
+            if (!destData) {
+                // Si no está en CABA, buscar en GBA Norte
+                destData = destinationsData.gba_norte.find(d => d.name === destination);
+            }
+            
+            if (!destData) {
+                console.error('Destino no encontrado:', destination);
+                return { distance: 10, zone: 'CABA' }; // Valor por defecto
+            }
+            
+            return { 
+                distance: destData.distance_km,
+                zone: destData.zone
+            };
+        }
+
+        // Cargar datos al iniciar
+        loadInitialData();
+
+        // Inicializar validación
+        validateForm();
+    </script>
+</body>
+</html>
