@@ -1,0 +1,6 @@
+// Archivo de registro de errores del sistema
+// Este archivo registra todos los errores producidos en el acceso a la base de datos
+// Formato: YYYY-MM-DD HH:MM Descripción del error
+// 
+// Los errores se escriben automáticamente mediante el código PHP cuando ocurren
+// según lo especificado en el PDF página 14

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Sistema de Contratos - SPA con MVT</title>
+    <style>
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        /* Contenedor principal */
+        .contenedor-principal {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Como esta el contenedor global */
+        div.contenedor-activo {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        
+        div.contenedor-desactivado {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        /* Encabezado */
+        .encabezado {
+            height: 10%;
+            background-color: lightskyblue;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .titulo {
+            font-size: 2em;
+        }
+        
+        .botones-control {
+            display: flex;
+            gap: 15px;
+        }
+        
+        /* foot */
+        .pie {
+            height: 10%;
+            background-color: lightskyblue;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        /* Cuerpo de la tabla */
+        .cuerpo-tabla {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: beige;
+        }
+        
+        /* Contenedor de la tabla */
+        .tabla-contenedor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .thead-contenedor, .tfoot-contenedor {
+            overflow: hidden;
+        }
+        
+        /* contenedor segun modelo prof. Compensa barra de scroll en thead y tfoot */
+        .thead-contenedor {
+            padding-right: 16px;
+        }
+        
+        .tfoot-contenedor {
+            padding-right: 16px;
+        }
+        
+        .tbody-contenedor {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        thead, tfoot {
+            background-color: rgb(126, 86, 94);
+            color: black;
+            font-weight: bold;
+        }
+        
+        /* Hacer que los th del primer tr sean clickeables */
+        thead tr:first-child th {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        thead tr:first-child th:hover {
+            background-color: rgb(150, 110, 118);
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        tbody tr:nth-child(odd) {
+            background-color: rgba(0,0,0,0.1);
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.9);
+        }
+        
+        /* Botones */
+        .boton {
+            padding: 8px 16px;
+            background-color: darkgray;
+            color: black;
+            border: 1px solid black;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .boton:hover {
+            background-color: lightblue;
+        }
+        
+        /* Anchos específicos para columnas */
+        [campo-dato='ID_Contratos'] {
+            width: 10%;
+        }
+        
+        [campo-dato='DNI_Deudor'] {
+            width: 13%;
+        }
+        
+        [campo-dato='Apellido_Nombres'] {
+            width: 25%;
+        }
+        
+        [campo-dato='Monto_total_financiado'] {
+            width: 22%;
+        }
+        
+        [campo-dato='FechaContrato'] {
+            width: 12%;
+        }
+        
+        [campo-dato='NroDeCuotas'] {
+            width: 8%;
+        }
+        
+        [campo-dato='QR'] {
+            width: 10%;
+        }
+        
+        /* Mensaje de carga */
+        .mensaje-carga {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        /* Media - responsividad */
+        @media (max-width: 900px) {
+            .titulo {
+                font-size: 1.5em;
+            }
+            
+            .botones-control {
+                flex-wrap: wrap;
+            }
+            
+            .boton {
+                font-size: 0.8em;
+                padding: 6px 10px;
+            }
+            
+            [campo-dato='NroDeCuotas'], [campo-dato='QR'] {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .titulo {
+                font-size: 1.2em;
+            }
+            
+            [campo-dato='FechaContrato'] {
+                display: none;
+            }
+            
+            th, td {
+                padding: 6px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div id="contenedorGlobal" class="contenedor-principal contenedor-activo">
+        <header class="encabezado">
+            <h1 class="titulo">Contrato de Cuotas</h1>
+            <div class="botones-control">
+                <label for="orden">Orden:</label>
+                <input type="text" id="orden" value="ID_Contratos">
+                <button id="cargarDatos" class="boton">Cargar datos</button>
+                <button id="vaciarDatos" class="boton">Vaciar datos</button>
+            </div>
+        </header>
+        
+        <div class="cuerpo-tabla">
+            <div class="tabla-contenedor">
+                <div class="thead-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th campo-dato="ID_Contratos" id="th_ID_Contratos">ID Contratos</th>
+                                <th campo-dato="DNI_Deudor" id="th_DNI_Deudor">DNI Deudor</th>
+                                <th campo-dato="Apellido_Nombres" id="th_Apellido_Nombres">Apellido Nombres</th>
+                                <th campo-dato="Monto_total_financiado" id="th_Monto_total_financiado">Monto Total Financiado</th>
+                                <th campo-dato="FechaContrato" id="th_FechaContrato">Fecha Contrato</th>
+                                <th campo-dato="NroDeCuotas" id="th_NroDeCuotas">Nro De Cuotas</th>
+                                <th campo-dato="QR" id="th_QR">QR</th>
+                            </tr>
+                            <tr>
+                                <th campo-dato="ID_Contratos"></th>
+                                <th campo-dato="DNI_Deudor"></th>
+                                <th campo-dato="Apellido_Nombres"></th>
+                                <th campo-dato="Monto_total_financiado"></th>
+                                <th campo-dato="FechaContrato"></th>
+                                <th campo-dato="NroDeCuotas">
+                                    <select id="filtroCuotas" style="width: 100%; padding: 4px;">
+                                        <option value="">Todas</option>
+                                        <option value="01">Una</option>
+                                        <option value="02">Dos</option>
+                                        <option value="03">Tres</option>
+                                        <option value="04">Cuatro</option>
+                                        <option value="05">Cinco</option>
+                                        <option value="06">Seis</option>
+                                    </select>
+                                </th>
+                                <th campo-dato="QR"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                
+                <div class="tbody-contenedor">
+                    <table>
+                        <tbody id="tbDatos">
+                            <!-- Los datos se cargarán aquí mediante AJAX -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tfoot-contenedor">
+                    <table>
+                        <tfoot>
+                            <tr>
+                                <th campo-dato="ID_Contratos" id="cantidadFilas">Cantidad: 0</th>
+                                <th campo-dato="DNI_Deudor"></th>
+                                <th campo-dato="Apellido_Nombres"></th>
+                                <th campo-dato="Monto_total_financiado" id="sumaMontos">Total: $0</th>
+                                <th campo-dato="FechaContrato"></th>
+                                <th campo-dato="NroDeCuotas"></th>
+                                <th campo-dato="QR"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="pie">
+            <p>Programación en entorno de redes - Ejercicio Acceso a Base de Datos - 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        // FUNCIÓN PRINCIPAL: cargaTabla() según especificación del PDF
+        function cargaTabla() {
+            var objTbDatos = document.getElementById("tbDatos");
+            
+            // 1) Vaciar de objetos el tbody
+            while(objTbDatos.childNodes.length > 0) {
+                objTbDatos.removeChild(objTbDatos.childNodes[0]);
+            }
+            
+            // 2) Insertar mensaje en el tbody "Esperando respuesta del servidor"
+            var objTr = document.createElement("tr");
+            var objTd = document.createElement("td");
+            objTd.setAttribute("colspan", "7");
+            objTd.className = "mensaje-carga";
+            objTd.innerHTML = "⏳ Esperando respuesta del servidor...";
+            objTr.appendChild(objTd);
+            objTbDatos.appendChild(objTr);
+            
+            // 3) Construir objeto de datos para ser enviados al servidor
+            const objDatosOrdenFiltros = new URLSearchParams();
+            objDatosOrdenFiltros.append('orden', document.getElementById("orden").value);
+            objDatosOrdenFiltros.append('f_NroDeCuotas', document.getElementById("filtroCuotas").value);
+            
+            // 4) Disparar el AJAX y programar la cadena de promesas
+            fetch('./salidaJsonContratosConPrepare.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: objDatosOrdenFiltros
+            })
+            .then(response => {
+                // Primera promesa: convertir la respuesta a JSON
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Segunda promesa: procesar los datos recibidos
+                
+                // Verificar si hay error en la respuesta
+                if (data.error) {
+                    throw new Error(data.mensaje);
+                }
+                
+                // Limpiar el tbody nuevamente
+                while(objTbDatos.childNodes.length > 0) {
+                    objTbDatos.removeChild(objTbDatos.childNodes[0]);
+                }
+                
+                // Verificar si hay datos
+                if (data.contratos.length === 0) {
+                    var objTr = document.createElement("tr");
+                    var objTd = document.createElement("td");
+                    objTd.setAttribute("colspan", "7");
+                    objTd.className = "mensaje-carga";
+                    objTd.innerHTML = "No se encontraron registros con los filtros seleccionados";
+                    objTr.appendChild(objTd);
+                    objTbDatos.appendChild(objTr);
+                    
+                    // Actualizar totales a cero
+                    document.getElementById("cantidadFilas").innerHTML = "Cantidad: 0";
+                    document.getElementById("sumaMontos").innerHTML = "Total: $0";
+                    return;
+                }
+                
+                // Variables para calcular totales
+                var sumaMontos = 0;
+                
+                // Recorrer array de contratos y crear las filas
+                data.contratos.forEach(function(contrato) {
+                    var objTr = document.createElement("tr");
+                    
+                    // ID_Contratos
+                    var objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "ID_Contratos");
+                    objTd.innerHTML = contrato.ID_Contratos;
+                    objTr.appendChild(objTd);
+                    
+                    // DNI_Deudor
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "DNI_Deudor");
+                    objTd.innerHTML = contrato.DNI_Deudor;
+                    objTr.appendChild(objTd);
+                    
+                    // Apellido_Nombres
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Apellido_Nombres");
+                    objTd.innerHTML = contrato.Apellido_Nombres;
+                    objTr.appendChild(objTd);
+                    
+                    // Monto_total_financiado
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Monto_total_financiado");
+                    objTd.innerHTML = "$" + parseFloat(contrato.Monto_total_financiado).toFixed(2);
+                    objTr.appendChild(objTd);
+                    
+                    // FechaContrato
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "FechaContrato");
+                    objTd.innerHTML = contrato.FechaContrato;
+                    objTr.appendChild(objTd);
+                    
+                    // NroDeCuotas
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "NroDeCuotas");
+                    objTd.innerHTML = contrato.NroDeCuotas;
+                    objTr.appendChild(objTd);
+                    
+                    // QR
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "QR");
+                    objTd.innerHTML = contrato.QR;
+                    objTr.appendChild(objTd);
+                    
+                    objTbDatos.appendChild(objTr);
+                    
+                    // Acumular monto
+                    sumaMontos += parseFloat(contrato.Monto_total_financiado);
+                });
+                
+                // Actualizar totales en el tfoot
+                document.getElementById("cantidadFilas").innerHTML = "Cantidad: " + data.cuenta;
+                document.getElementById("sumaMontos").innerHTML = "Total: $" + sumaMontos.toFixed(2);
+            })
+            .catch(error => {
+                // Manejo de errores
+                console.error('Error:', error);
+                
+                // Limpiar tbody
+                while(objTbDatos.childNodes.length > 0) {
+                    objTbDatos.removeChild(objTbDatos.childNodes[0]);
+                }
+                
+                // Mostrar mensaje de error
+                var objTr = document.createElement("tr");
+                var objTd = document.createElement("td");
+                objTd.setAttribute("colspan", "7");
+                objTd.className = "mensaje-carga";
+                objTd.style.color = "red";
+                objTd.innerHTML = "❌ Error al cargar datos: " + error.message;
+                objTr.appendChild(objTd);
+                objTbDatos.appendChild(objTr);
+                
+                alert('Error al cargar datos del servidor: ' + error.message);
+            });
+        }
+        
+        // Función para vaciar tabla
+        function vaciarTabla() {
+            var objTbDatos = document.getElementById("tbDatos");
+            while(objTbDatos.childNodes.length > 0) {
+                objTbDatos.removeChild(objTbDatos.childNodes[0]);
+            }
+            
+            // Limpiar totales
+            document.getElementById("cantidadFilas").innerHTML = "Cantidad: 0";
+            document.getElementById("sumaMontos").innerHTML = "Total: $0";
+            
+            // Resetear filtro
+            document.getElementById("filtroCuotas").value = "";
+            
+            // Resetear orden a valor por defecto
+            document.getElementById("orden").value = "ID_Contratos";
+        }
+        
+        // Eventos cuando el documento está listo
+        window.addEventListener("load", function() {
+            // Event listener para cargar datos desde servidor
+            document.getElementById("cargarDatos").addEventListener("click", function() {
+                cargaTabla();
+            });
+            
+            // Event listener para vaciar tabla
+            document.getElementById("vaciarDatos").addEventListener("click", function() {
+                vaciarTabla();
+            });
+            
+            // Event listeners para ordenamiento por columna (según PDF página 6)
+            // Actualiza el campo "orden" Y recarga automáticamente
+            document.getElementById("th_ID_Contratos").addEventListener("click", function() {
+                document.getElementById("orden").value = "ID_Contratos";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_DNI_Deudor").addEventListener("click", function() {
+                document.getElementById("orden").value = "DNI_Deudor";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_Apellido_Nombres").addEventListener("click", function() {
+                document.getElementById("orden").value = "Apellido_Nombres";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_Monto_total_financiado").addEventListener("click", function() {
+                document.getElementById("orden").value = "Monto_total_financiado";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_FechaContrato").addEventListener("click", function() {
+                document.getElementById("orden").value = "FechaContrato";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_NroDeCuotas").addEventListener("click", function() {
+                document.getElementById("orden").value = "NroDeCuotas";
+                cargaTabla();
+            });
+            
+            document.getElementById("th_QR").addEventListener("click", function() {
+                document.getElementById("orden").value = "QR";
+                cargaTabla();
+            });
+        });
+    </script>
+</body>
+</html>
