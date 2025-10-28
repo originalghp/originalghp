@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Sistema de Contratos - SPA con MVT</title>
+    <style>
+        /* Estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        /* Contenedor principal */
+        .contenedor-principal {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Como esta el contenedor global */
+        div.contenedor-activo {
+            pointer-events: auto;
+            opacity: 1;
+        }
+        
+        div.contenedor-desactivado {
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        /* Encabezado */
+        .encabezado {
+            height: 10%;
+            background-color: lightskyblue;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .titulo {
+            font-size: 2em;
+        }
+        
+        .botones-control {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        /* foot */
+        .pie {
+            height: 10%;
+            background-color: lightskyblue;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        /* Cuerpo de la tabla */
+        .cuerpo-tabla {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            background-color: beige;
+        }
+        
+        /* Contenedor de la tabla */
+        .tabla-contenedor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .thead-contenedor, .tfoot-contenedor {
+            overflow: hidden;
+        }
+        
+        /* contenedor segun modelo prof. Compensa barra de scroll en thead y tfoot */
+        .thead-contenedor {
+            padding-right: 16px;
+        }
+        
+        .tfoot-contenedor {
+            padding-right: 16px;
+        }
+        
+        .tbody-contenedor {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        thead, tfoot {
+            background-color: rgb(126, 86, 94);
+            color: black;
+            font-weight: bold;
+        }
+        
+        /* Hacer que los th del primer tr sean clickeables */
+        thead tr:first-child th {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        thead tr:first-child th:hover {
+            background-color: rgb(150, 110, 118);
+        }
+        
+        /* Columnas Modis y Bajas NO son clickeables */
+        thead tr:first-child th[campo-dato='Modis'],
+        thead tr:first-child th[campo-dato='Bajas'] {
+            cursor: default;
+            background-color: rgb(126, 86, 94);
+        }
+        
+        thead tr:first-child th[campo-dato='Modis']:hover,
+        thead tr:first-child th[campo-dato='Bajas']:hover {
+            background-color: rgb(150, 110, 118);
+        }
+        
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        tbody tr:nth-child(odd) {
+            background-color: rgba(0,0,0,0.1);
+        }
+        
+        tbody tr:nth-child(even) {
+            background-color: rgba(255,255,255,0.9);
+        }
+        
+        /* Botones */
+        .boton {
+            padding: 8px 16px;
+            background-color: darkgray;
+            color: black;
+            border: 1px solid black;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        
+        .boton:hover {
+            background-color: lightblue;
+        }
+        
+        /* Botones dentro de celdas */
+        .btCelda {
+            padding: 5px 10px;
+            border: 1px solid #333;
+            cursor: pointer;
+            font-size: 0.85em;
+            border-radius: 3px;
+        }
+        
+        .btVerQR {
+            background-color: white;
+            color: black;
+        }
+        
+        .btVerQR:hover {
+            background-color: #138496;
+        }
+        
+        .btModi {
+            background-color: white;
+            color: black;
+        }
+        
+        .btModi:hover {
+            background-color: blue;
+        }
+        
+        .btBaja {
+            background-color: white;
+            color: black;
+        }
+        
+        .btBaja:hover {
+            background-color: blue;
+        }
+        
+        /* Anchos especificos para columnas - OPTIMIZADOS para mostrar todas */
+        [campo-dato='ID_Contratos'] {
+            width: 8%;
+        }
+        
+        [campo-dato='DNI_Deudor'] {
+            width: 10%;
+        }
+        
+        [campo-dato='Apellido_Nombres'] {
+            width: 20%;
+        }
+        
+        [campo-dato='Monto_total_financiado'] {
+            width: 15%;
+        }
+        
+        [campo-dato='FechaContrato'] {
+            width: 10%;
+        }
+        
+        [campo-dato='NroDeCuotas'] {
+            width: 7%;
+        }
+        
+        [campo-dato='QR'] {
+            width: 7%;
+        }
+        
+        [campo-dato='Modis'] {
+            width: 7%;
+            text-align: center;
+        }
+        
+        [campo-dato='Bajas'] {
+            width: 7%;
+            text-align: center;
+        }
+        
+        /* Mensaje de carga */
+        .mensaje-carga {
+            text-align: center;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        
+        /* Ventanas modales - Segun PDF pagina 2 */
+        .ventanaModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            visibility: hidden;
+        }
+        
+        .ventanaModal[style*="visible"] {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .contenidoModal {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        
+        .encabezadoModal {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .footerModal {
+            margin-top: 20px;
+            text-align: right;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+        
+        .btCerrar {
+            background-color: #6c757d;
+            padding: 10px 20px;
+            margin-left: 10px;
+        }
+        
+        .btCerrar:hover {
+            background-color: #545b62;
+        }
+        
+        /* Formularios - Segun PDF pagina 12 */
+        form ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        form li {
+            margin-bottom: 15px;
+        }
+        
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        form input,
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        form input[type="file"] {
+            padding: 5px;
+        }
+        
+        form input:focus,
+        form select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0,123,255,0.3);
+        }
+        
+        form input:required:invalid {
+            border-color: #dc3545;
+        }
+        
+        form input:required:valid {
+            border-color: #28a745;
+        }
+        
+        /* Boton de envio de formulario */
+        .btEnvioForm {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btEnvioForm:hover {
+            background-color: #0056b3;
+        }
+        
+        .btEnvioForm:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Ventana Modal para Ver QR */
+        .modalQR {
+            text-align: center;
+        }
+        
+        .modalQR img {
+            max-width: 100%;
+            max-height: 500px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        [campo-dato='QR'] {
+            width: 7%;
+            text-align: center; /* CENTRAR TODO EL CONTENIDO DE LA COLUMNA QR */
+        }
+        /* Ventana Modal de Respuesta */
+        #contenidoModalRespuesta {
+            white-space: pre-wrap;
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        /* Modal para visualizacion de PDF - Estilo extramodal */
+        .modal-pdf-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-pdf-overlay.activo {
+            display: flex;
+        }
+        
+        .modal-pdf-contenedor {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            max-height: 900px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .modal-pdf-encabezado {
+            background-color: #f5f5f5;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-pdf-titulo {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+        }
+        
+        .modal-pdf-boton-cerrar {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+        }
+        
+        .modal-pdf-boton-cerrar:hover {
+            color: #000;
+        }
+        
+        .modal-pdf-cuerpo {
+            flex: 1;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+            background-color: #525252;
+        }
+        
+        .modal-pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .modal-pdf-cargando {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 1.2em;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .modal-pdf-error {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #d9534f;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        
+        /* Media - responsividad mejorada */
+        @media (max-width: 1200px) {
+            .titulo {
+                font-size: 1.7em;
+            }
+            
+            .botones-control {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+            
+            .boton {
+                font-size: 0.85em;
+                padding: 6px 12px;
+            }
+            
+            /* Ajustes de columnas para pantallas medianas */
+            [campo-dato='ID_Contratos'] {
+                width: 7%;
+            }
+            
+            [campo-dato='DNI_Deudor'] {
+                width: 9%;
+            }
+            
+            [campo-dato='Apellido_Nombres'] {
+                width: 18%;
+            }
+            
+            [campo-dato='Monto_total_financiado'] {
+                width: 14%;
+            }
+            
+            [campo-dato='FechaContrato'] {
+                width: 9%;
+            }
+            
+            [campo-dato='NroDeCuotas'] {
+                width: 6%;
+            }
+            
+            [campo-dato='QR'] {
+                width: 6%;
+            }
+            
+            [campo-dato='Modis'] {
+                width: 6%;
+            }
+            
+            [campo-dato='Bajas'] {
+                width: 6%;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .titulo {
+                font-size: 1.5em;
+            }
+            
+            .botones-control {
+                gap: 8px;
+            }
+            
+            .boton {
+                font-size: 0.8em;
+                padding: 5px 10px;
+            }
+            
+            th, td {
+                padding: 6px;
+                font-size: 0.9em;
+            }
+            
+            /* Ajustes mas agresivos para pantallas pequenas */
+            [campo-dato='ID_Contratos'] {
+                width: 6%;
+            }
+            
+            [campo-dato='DNI_Deudor'] {
+                width: 8%;
+            }
+            
+            [campo-dato='Apellido_Nombres'] {
+                width: 16%;
+            }
+            
+            [campo-dato='Monto_total_financiado'] {
+                width: 12%;
+            }
+            
+            [campo-dato='FechaContrato'] {
+                width: 8%;
+            }
+            
+            [campo-dato='NroDeCuotas'] {
+                width: 5%;
+            }
+            
+            [campo-dato='QR'] {
+                width: 5%;
+            }
+            
+            [campo-dato='Modis'] {
+                width: 5%;
+            }
+            
+            [campo-dato='Bajas'] {
+                width: 5%;
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .titulo {
+                font-size: 1.2em;
+            }
+            
+            .encabezado {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+            
+            .botones-control {
+                margin-top: 10px;
+                justify-content: center;
+            }
+            
+            /* Ajustes extremos para pantallas muy pequenas */
+            [campo-dato='ID_Contratos'] {
+                width: 5%;
+            }
+            
+            [campo-dato='DNI_Deudor'] {
+                width: 7%;
+            }
+            
+            [campo-dato='Apellido_Nombres'] {
+                width: 14%;
+            }
+            
+            [campo-dato='Monto_total_financiado'] {
+                width: 10%;
+            }
+            
+            [campo-dato='FechaContrato'] {
+                width: 7%;
+            }
+            
+            [campo-dato='NroDeCuotas'] {
+                width: 4%;
+            }
+            
+            [campo-dato='QR'] {
+                width: 4%;
+            }
+            
+            [campo-dato='Modis'] {
+                width: 4%;
+            }
+            
+            [campo-dato='Bajas'] {
+                width: 4%;
+            }
+            
+            th, td {
+                padding: 4px;
+                font-size: 0.8em;
+            }
+            
+            .btCelda {
+                padding: 3px 6px;
+                font-size: 0.75em;
+            }
+        }
+        
+        /* Para pantallas muy pequenas, forzar scroll horizontal */
+        @media (max-width: 600px) {
+            .tabla-contenedor {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 800px; /* Ancho maximo para mantener todas las columnas */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div id="contenedorGlobal" class="contenedor-principal contenedor-activo">
+        <header class="encabezado">
+            <h1 class="titulo">Contrato de Cuotas</h1>
+            <div class="botones-control">
+                <label for="orden">Orden:</label>
+                <input type="text" id="orden" value="ID_Contratos">
+                <button id="cargarDatos" class="boton">Cargar datos</button>
+                <button id="vaciarDatos" class="boton">Vaciar datos</button>
+                <button id="limpiarFiltros" class="boton">Limpiar filtros</button>
+                <button id="altaRegistro" class="boton">Alta registro</button>
+            </div>
+        </header>
+        
+        <div class="cuerpo-tabla">
+            <div class="tabla-contenedor">
+                <div class="thead-contenedor">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th campo-dato="ID_Contratos" id="th_ID_Contratos" title="Click para ordenar">ID Contratos</th>
+                                <th campo-dato="DNI_Deudor" id="th_DNI_Deudor" title="Click para ordenar">DNI Deudor</th>
+                                <th campo-dato="Apellido_Nombres" id="th_Apellido_Nombres" title="Click para ordenar">Apellido Nombres</th>
+                                <th campo-dato="Monto_total_financiado" id="th_Monto_total_financiado" title="Click para ordenar">Monto Total Financiado</th>
+                                <th campo-dato="FechaContrato" id="th_FechaContrato" title="Click para ordenar">Fecha Contrato</th>
+                                <th campo-dato="NroDeCuotas" id="th_NroDeCuotas" title="Click para ordenar">Nro De Cuotas</th>
+                                <th campo-dato="QR" id="th_QR" title="Click para ordenar">QR</th>
+                                <th campo-dato="Modis">Modis</th>
+                                <th campo-dato="Bajas">Bajas</th>
+                            </tr>
+                            <tr>
+                                <th campo-dato="ID_Contratos"></th>
+                                <th campo-dato="DNI_Deudor"></th>
+                                <th campo-dato="Apellido_Nombres"></th>
+                                <th campo-dato="Monto_total_financiado"></th>
+                                <th campo-dato="FechaContrato"></th>
+                                <th campo-dato="NroDeCuotas">
+                                    <select id="filtroCuotas">
+                                        <option value="">Todas</option>
+                                        <option value="01">Una</option>
+                                        <option value="02">Dos</option>
+                                        <option value="03">Tres</option>
+                                        <option value="04">Cuatro</option>
+                                        <option value="05">Cinco</option>
+                                        <option value="06">Seis</option>
+                                    </select>
+                                </th>
+                                <th campo-dato="QR"></th>
+                                <th campo-dato="Modis"></th>
+                                <th campo-dato="Bajas"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                
+                <div class="tbody-contenedor">
+                    <table>
+                        <tbody id="tbDatos">
+                            <!-- Las filas se cargaran dinamicamente -->
+                            <tr>
+                                <td colspan="9" class="mensaje-carga">Presione "Cargar datos" para mostrar los registros</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tfoot-contenedor">
+                    <table>
+                        <tfoot>
+                            <tr>
+                                <th campo-dato="ID_Contratos">
+                                    <span id="cantidadFilas">Cantidad: 0</span>
+                                </th>
+                                <th campo-dato="DNI_Deudor"></th>
+                                <th campo-dato="Apellido_Nombres"></th>
+                                <th campo-dato="Monto_total_financiado">
+                                    <span id="sumaMontos">Total: $0</span>
+                                </th>
+                                <th campo-dato="FechaContrato"></th>
+                                <th campo-dato="NroDeCuotas"></th>
+                                <th campo-dato="QR"></th>
+                                <th campo-dato="Modis"></th>
+                                <th campo-dato="Bajas"></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="pie">
+            <p>Programacion en entorno de redes - Ejercicio ABM con acceso a Base de Datos - 2025</p>
+        </footer>
+    </div>
+
+    <!-- Ventana Modal para Alta de Registros - Segun PDF pagina 12 -->
+    <div id="ventanaModalFormularioAlta" class="ventanaModal">
+        <div class="contenidoModal">
+            <div id="encabezadoModalAlta" class="encabezadoModal">
+                Alta de Contrato
+            </div>
+            <div id="contenidoModalAlta">
+                <form id="formContratosAlta" method="post" enctype="multipart/form-data">
+                    <ul>
+                        <li>
+                            <label for="formContratosEntIDAlta">ID Contrato: *</label>
+                            <input type="text" id="formContratosEntIDAlta" name="ID_Contratos" required maxlength="10" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntDNIAlta">DNI Deudor: *</label>
+                            <input type="text" id="formContratosEntDNIAlta" name="DNI_Deudor" required maxlength="20" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntApellidoAlta">Apellido y Nombres: *</label>
+                            <input type="text" id="formContratosEntApellidoAlta" name="Apellido_Nombres" required maxlength="100" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntMontoAlta">Monto Total Financiado: *</label>
+                            <input type="number" id="formContratosEntMontoAlta" name="Monto_total_financiado" required step="0.01" min="0" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntFechaAlta">Fecha Contrato: *</label>
+                            <input type="date" id="formContratosEntFechaAlta" name="FechaContrato" required />
+                        </li>
+                        <li>
+                            <label for="formContratosEntCuotasAlta">Numero de Cuotas: *</label>
+                            <select id="formContratosEntCuotasAlta" name="NroDeCuotas" required>
+                                <option value="">Seleccione...</option>
+                                <option value="01">Una</option>
+                                <option value="02">Dos</option>
+                                <option value="03">Tres</option>
+                                <option value="04">Cuatro</option>
+                                <option value="05">Cinco</option>
+                                <option value="06">Seis</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="formContratosEntQRAlta">Imagen QR (opcional):</label>
+                            <input type="file" id="formContratosEntQRAlta" name="QR" accept="image/*" />
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="footerModal">
+                <button id="btEnvioFormAlta" class="btEnvioForm" disabled>Enviar Alta</button>
+                <button id="btCerrarModalAlta" class="btCerrar boton">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para Modificacion de Registros -->
+    <div id="ventanaModalFormularioModi" class="ventanaModal">
+        <div class="contenidoModal">
+            <div id="encabezadoModalModi" class="encabezadoModal">
+                Modificacion de Contrato
+            </div>
+            <div id="contenidoModalModi">
+                <form id="formContratosModi" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="formContratosEntIDModiOriginal" name="ID_Contratos_Original" />
+                    <ul>
+                        <li>
+                            <label for="formContratosEntIDModi">ID Contrato: *</label>
+                            <input type="text" id="formContratosEntIDModi" name="ID_Contratos" required maxlength="10" readonly style="background-color: #e9ecef;" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntDNIModi">DNI Deudor: *</label>
+                            <input type="text" id="formContratosEntDNIModi" name="DNI_Deudor" required maxlength="20" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntApellidoModi">Apellido y Nombres: *</label>
+                            <input type="text" id="formContratosEntApellidoModi" name="Apellido_Nombres" required maxlength="100" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntMontoModi">Monto Total Financiado: *</label>
+                            <input type="number" id="formContratosEntMontoModi" name="Monto_total_financiado" required step="0.01" min="0" />
+                        </li>
+                        <li>
+                            <label for="formContratosEntFechaModi">Fecha Contrato: *</label>
+                            <input type="date" id="formContratosEntFechaModi" name="FechaContrato" required />
+                        </li>
+                        <li>
+                            <label for="formContratosEntCuotasModi">Numero de Cuotas: *</label>
+                            <select id="formContratosEntCuotasModi" name="NroDeCuotas" required>
+                                <option value="">Seleccione...</option>
+                                <option value="01">Una</option>
+                                <option value="02">Dos</option>
+                                <option value="03">Tres</option>
+                                <option value="04">Cuatro</option>
+                                <option value="05">Cinco</option>
+                                <option value="06">Seis</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label for="formContratosEntQRModi">Nueva Imagen QR (opcional, deje vacio para no cambiar):</label>
+                            <input type="file" id="formContratosEntQRModi" name="QR" accept="image/*" />
+                        </li>
+                    </ul>
+                </form>
+            </div>
+            <div class="footerModal">
+                <button id="btEnvioFormModi" class="btEnvioForm" disabled>Guardar Cambios</button>
+                <button id="btCerrarModalModi" class="btCerrar boton">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para Ver QR -->
+    <div id="ventanaModalQR" class="ventanaModal">
+        <div class="contenidoModal modalQR">
+            <div class="encabezadoModal">
+                Imagen QR del Contrato
+            </div>
+            <div id="contenidoModalQR">
+                <!-- La imagen se insertara dinamicamente aqui -->
+            </div>
+            <div class="footerModal">
+                <button id="btCerrarModalQR" class="btCerrar boton">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ventana Modal para Respuestas del Servidor -->
+    <div id="ventanaModalRespuesta" class="ventanaModal">
+        <div class="contenidoModal">
+            <div id="encabezadoModalRespuesta" class="encabezadoModal">
+                Respuesta del Servidor
+            </div>
+            <div id="contenidoModalRespuesta">
+                <!-- La respuesta se insertara aqui -->
+            </div>
+            <div class="footerModal">
+                <button id="btCerrarModalRespuesta" class="btCerrar boton">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Extramodal para visualizacion de PDF -->
+    <div id="modalPDFViewer" class="modal-pdf-overlay">
+        <div class="modal-pdf-contenedor">
+            <div class="modal-pdf-encabezado">
+                <h2 class="modal-pdf-titulo">Respuesta del servidor</h2>
+                <button class="modal-pdf-boton-cerrar" onclick="cerrarModalPDF()">x</button>
+            </div>
+            <div class="modal-pdf-cuerpo">
+                <div id="pdfCargando" class="modal-pdf-cargando">
+                    Cargando PDF...
+                </div>
+                <iframe id="pdfViewer" class="modal-pdf-viewer" style="display:none;"></iframe>
+                <div id="pdfError" class="modal-pdf-error" style="display:none;">
+                    <h3>Error al cargar el PDF</h3>
+                    <p id="pdfErrorMensaje"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // ========================================
+        // FUNCION PRINCIPAL: cargaTabla()
+        // ========================================
+        function cargaTabla() {
+            var objTbDatos = document.getElementById("tbDatos");
+            
+            // 1) Vaciar de objetos el tbody
+            while(objTbDatos.childNodes.length > 0) {
+                objTbDatos.removeChild(objTbDatos.childNodes[0]);
+            }
+            
+            // 2) Insertar mensaje en el tbody "Esperando respuesta del servidor"
+            var objTr = document.createElement("tr");
+            var objTd = document.createElement("td");
+            objTd.setAttribute("colspan", "9"); // MODIFICADO: ahora son 9 columnas
+            objTd.className = "mensaje-carga";
+            objTd.innerHTML = " Esperando respuesta del servidor...";
+            objTr.appendChild(objTd);
+            objTbDatos.appendChild(objTr);
+            
+            // 3) Construir objeto de datos para ser enviados al servidor
+            const objDatosOrdenFiltros = new URLSearchParams();
+            objDatosOrdenFiltros.append('orden', document.getElementById("orden").value);
+            objDatosOrdenFiltros.append('f_NroDeCuotas', document.getElementById("filtroCuotas").value);
+            
+            // 4) Disparar el AJAX y programar la cadena de promesas
+            fetch('./salidaJsonContratosConPrepare.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: objDatosOrdenFiltros
+            })
+            .then(response => {
+                // Primera promesa: convertir la respuesta a JSON
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // ALERT PARA DEBUG (comentar en produccion)
+                // alert("Datos recibidos del servidor:\n" + JSON.stringify(data, null, 2));
+                
+                // Segunda promesa: procesar los datos recibidos
+                
+                // Verificar si hay error en la respuesta
+                if (data.error) {
+                    throw new Error(data.mensaje);
+                }
+                
+                // Limpiar el tbody nuevamente
+                while(objTbDatos.childNodes.length > 0) {
+                    objTbDatos.removeChild(objTbDatos.childNodes[0]);
+                }
+                
+                // Verificar si hay datos
+                if (data.contratos.length === 0) {
+                    var objTr = document.createElement("tr");
+                    var objTd = document.createElement("td");
+                    objTd.setAttribute("colspan", "9"); // MODIFICADO: 9 columnas
+                    objTd.className = "mensaje-carga";
+                    objTd.innerHTML = "No se encontraron registros con los filtros seleccionados";
+                    objTr.appendChild(objTd);
+                    objTbDatos.appendChild(objTr);
+                    
+                    // Actualizar totales a cero
+                    document.getElementById("cantidadFilas").innerHTML = "Cantidad: 0";
+                    document.getElementById("sumaMontos").innerHTML = "Total: $0";
+                    return;
+                }
+                
+                // Variables para calcular totales
+                var sumaMontos = 0;
+                
+                // Recorrer array de contratos y crear las filas
+                data.contratos.forEach(function(contrato) {
+                    var objTr = document.createElement("tr");
+                    
+                    // ID_Contratos
+                    var objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "ID_Contratos");
+                    objTd.innerHTML = contrato.ID_Contratos;
+                    objTr.appendChild(objTd);
+                    
+                    // DNI_Deudor
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "DNI_Deudor");
+                    objTd.innerHTML = contrato.DNI_Deudor;
+                    objTr.appendChild(objTd);
+                    
+                    // Apellido_Nombres
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Apellido_Nombres");
+                    objTd.innerHTML = contrato.Apellido_Nombres;
+                    objTr.appendChild(objTd);
+                    
+                    // Monto_total_financiado
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Monto_total_financiado");
+                    objTd.innerHTML = "$" + parseFloat(contrato.Monto_total_financiado).toFixed(2);
+                    objTr.appendChild(objTd);
+                    
+                    // FechaContrato
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "FechaContrato");
+                    objTd.innerHTML = contrato.FechaContrato;
+                    objTr.appendChild(objTd);
+                    
+                    // NroDeCuotas
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "NroDeCuotas");
+                    objTd.innerHTML = contrato.NroDeCuotas;
+                    objTr.appendChild(objTd);
+                    
+                    // QR - MODIFICADO: Boton para ver QR en lugar de mostrar base64
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "QR");
+                    if (contrato.QR && contrato.QR !== '') {
+                        objTd.innerHTML = "<button class='btCelda btVerQR'>QR</button>";
+                        objTd.onclick = function() {
+                            verQR(contrato.ID_Contratos);
+                        };
+                    } else {
+                        objTd.innerHTML = "<span style='color:#999;'>Sin QR</span>";
+                    }
+                    objTr.appendChild(objTd);
+                    
+                    // NUEVA COLUMNA: Modis
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Modis");
+                    objTd.innerHTML = "<button class='btCelda btModi'>Modi</button>";
+                    objTd.onclick = function() {
+                        modificar(contrato);
+                    };
+                    objTr.appendChild(objTd);
+                    
+                    // NUEVA COLUMNA: Bajas
+                    objTd = document.createElement("td");
+                    objTd.setAttribute("campo-dato", "Bajas");
+                    objTd.innerHTML = "<button class='btCelda btBaja'>Borrar</button>";
+                    objTd.onclick = function() {
+                        eliminar(contrato.ID_Contratos);
+                    };
+                    objTr.appendChild(objTd);
+                    
+                    objTbDatos.appendChild(objTr);
+                    
+                    // Acumular monto
+                    sumaMontos += parseFloat(contrato.Monto_total_financiado);
+                });
+                
+                // Actualizar totales en el tfoot
+                document.getElementById("cantidadFilas").innerHTML = "Cantidad: " + data.cuenta;
+                document.getElementById("sumaMontos").innerHTML = "Total: $" + sumaMontos.toFixed(2);
+            })
+            .catch(error => {
+                // Manejo de errores
+                console.error('Error:', error);
+                
+                // Limpiar tbody
+                while(objTbDatos.childNodes.length > 0) {
+                    objTbDatos.removeChild(objTbDatos.childNodes[0]);
+                }
+                
+                // Mostrar mensaje de error
+                var objTr = document.createElement("tr");
+                var objTd = document.createElement("td");
+                objTd.setAttribute("colspan", "9");
+                objTd.className = "mensaje-carga";
+                objTd.style.color = "red";
+                objTd.innerHTML = " Error al cargar datos: " + error.message;
+                objTr.appendChild(objTd);
+                objTbDatos.appendChild(objTr);
+                
+                // Actualizar totales a cero
+                document.getElementById("cantidadFilas").innerHTML = "Cantidad: 0";
+                document.getElementById("sumaMontos").innerHTML = "Total: $0";
+            });
+        }
+        
+        // ========================================
+        // FUNCIONES DE LAS NUEVAS COLUMNAS
+        // ========================================
+        
+        // Funcion para ver QR - Modificada para mostrar PDF en modal
+        function verQR(idContrato) {
+            console.log("Ver QR del contrato: " + idContrato);
+            
+            // Abrir el modal
+            var modal = document.getElementById("modalPDFViewer");
+            modal.classList.add("activo");
+            
+            // Mostrar indicador de carga
+            document.getElementById("pdfCargando").style.display = "block";
+            document.getElementById("pdfViewer").style.display = "none";
+            document.getElementById("pdfError").style.display = "none";
+            
+            // Crear FormData para enviar el ID del contrato
+            var formData = new FormData();
+            formData.append('ID_Contratos', idContrato);
+            
+            // Hacer la peticion al servidor
+            fetch('traeBinario.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Ocultar indicador de carga
+                document.getElementById("pdfCargando").style.display = "none";
+                
+                if (data.error) {
+                    // Mostrar error
+                    document.getElementById("pdfError").style.display = "block";
+                    document.getElementById("pdfErrorMensaje").innerHTML = data.mensaje || "Error desconocido";
+                } else if (data.QR && data.QR !== '') {
+                    // Convertir base64 a blob y crear URL
+                    var pdfData = atob(data.QR);
+                    var pdfArray = new Uint8Array(pdfData.length);
+                    for (var i = 0; i < pdfData.length; i++) {
+                        pdfArray[i] = pdfData.charCodeAt(i);
+                    }
+                    var pdfBlob = new Blob([pdfArray], { type: 'application/pdf' });
+                    var pdfUrl = URL.createObjectURL(pdfBlob);
+                    
+                    // Mostrar el PDF en el iframe
+                    var pdfViewer = document.getElementById("pdfViewer");
+                    pdfViewer.src = pdfUrl;
+                    pdfViewer.style.display = "block";
+                } else {
+                    // No hay QR disponible
+                    document.getElementById("pdfError").style.display = "block";
+                    document.getElementById("pdfErrorMensaje").innerHTML = "El contrato no tiene PDF disponible";
+                }
+            })
+            .catch(error => {
+                // Error en la peticion
+                console.error('Error:', error);
+                document.getElementById("pdfCargando").style.display = "none";
+                document.getElementById("pdfError").style.display = "block";
+                document.getElementById("pdfErrorMensaje").innerHTML = "Error al cargar el PDF: " + error.message;
+            });
+        }
+        
+        // Funcion para cerrar el modal de PDF
+        function cerrarModalPDF() {
+            var modal = document.getElementById("modalPDFViewer");
+            modal.classList.remove("activo");
+            
+            // Limpiar el visor
+            var pdfViewer = document.getElementById("pdfViewer");
+            if (pdfViewer.src) {
+                URL.revokeObjectURL(pdfViewer.src);
+                pdfViewer.src = "";
+            }
+            
+            // Resetear la vista
+            document.getElementById("pdfCargando").style.display = "block";
+            document.getElementById("pdfViewer").style.display = "none";
+            document.getElementById("pdfError").style.display = "none";
+        }
+        
+        
+        // Funcion para modificar
+        function modificar(contrato) {
+            // Aqui se implementaria la logica para modificar
+            console.log("Modificar contrato: ", contrato);
+            // Por ahora, mostramos un mensaje
+            alert("Funcionalidad de modificar para el contrato: " + contrato.ID_Contratos);
+        }
+        
+        // Funcion para eliminar
+        function eliminar(idContrato) {
+            // Aqui se implementaria la logica para eliminar
+            console.log("Eliminar contrato: " + idContrato);
+            // Por ahora, mostramos un mensaje de confirmacion
+            if (confirm("Esta seguro de que desea eliminar el contrato " + idContrato + "?")) {
+                alert("Contrato " + idContrato + " eliminado (simulado)");
+            }
+        }
+        
+        // ========================================
+        // FUNCIONES AUXILIARES
+        // ========================================
+        
+        // Funcion para vaciar la tabla
+        function vaciarTabla() {
+            var objTbDatos = document.getElementById("tbDatos");
+            
+            // Vaciar de objetos el tbody
+            while(objTbDatos.childNodes.length > 0) {
+                objTbDatos.removeChild(objTbDatos.childNodes[0]);
+            }
+            
+            // Insertar mensaje en el tbody
+            var objTr = document.createElement("tr");
+            var objTd = document.createElement("td");
+            objTd.setAttribute("colspan", "9");
+            objTd.className = "mensaje-carga";
+            objTd.innerHTML = "Presione 'Cargar datos' para mostrar los registros";
+            objTr.appendChild(objTd);
+            objTbDatos.appendChild(objTr);
+            
+            // Actualizar totales a cero
+            document.getElementById("cantidadFilas").innerHTML = "Cantidad: 0";
+            document.getElementById("sumaMontos").innerHTML = "Total: $0";
+        }
+        
+        // ========================================
+        // INICIALIZACION AL CARGAR LA PAGINA
+        // ========================================
+        document.addEventListener("DOMContentLoaded", function() {
+            // Configurar eventos de los botones de control
+            document.getElementById("cargarDatos").addEventListener("click", cargaTabla);
+            document.getElementById("vaciarDatos").addEventListener("click", vaciarTabla);
+            document.getElementById("limpiarFiltros").addEventListener("click", function() {
+                document.getElementById("filtroCuotas").value = "";
+                cargaTabla();
+            });
+            document.getElementById("altaRegistro").addEventListener("click", function() {
+                // Aqui se implementaria la logica para abrir el formulario de alta
+                console.log("Abrir formulario de alta");
+                alert("Funcionalidad de alta de registro");
+            });
+            
+            // Configurar eventos de ordenamiento en los encabezados
+            document.querySelectorAll("thead tr:first-child th").forEach(function(th) {
+                if (th.getAttribute("campo-dato") !== "Modis" && th.getAttribute("campo-dato") !== "Bajas") {
+                    th.addEventListener("click", function() {
+                        document.getElementById("orden").value = this.getAttribute("campo-dato");
+                        cargaTabla();
+                    });
+                }
+            });
+            
+            // Configurar evento de filtro por cuotas
+            document.getElementById("filtroCuotas").addEventListener("change", cargaTabla);
+            
+            // Inicializar la tabla vacia
+            vaciarTabla();
+        });
+    </script>
+</body>
+</html>
