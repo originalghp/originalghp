@@ -5,6 +5,7 @@
  * Entrega datos de contratos en formato JSON usando sentencias preparadas
  * Segun PDF paginas 7-14
  * MODIFICADO: Maneja campo QR como LONGBLOB (PDF Lectura y Actualizacion de Binarios)
+ * MODIFICADO: Hace JOIN con tabla Cuotas para obtener descripcion de cuotas
  */
 
 // Incluir archivo con datos de conexion (PDF pagina 7)
@@ -41,18 +42,28 @@ try {
 }
 
 // 3. ASIGNACION DE CONSULTA SQL A UNA VARIABLE (PDF pagina 9 y 12)
-$sql = "SELECT * FROM ContratoDeCuotas WHERE ";
+// MODIFICADO: Hacer JOIN con tabla Cuotas para obtener la descripcion
+$sql = "SELECT c.*, cu.Descrip as DescripcionCuotas FROM ContratoDeCuotas c ";
+$sql .= "LEFT JOIN Cuotas cu ON c.NroDeCuotas = cu.Cod ";
+$sql .= "WHERE ";
 
 // Aplicar filtro si existe (PDF pagina 12 - uso de parametros preparados)
 if ($f_NroDeCuotas !== '') {
-    $sql = $sql . "NroDeCuotas = :NroDeCuotas ";
+    $sql = $sql . "c.NroDeCuotas = :NroDeCuotas ";
 } else {
     // Si no hay filtro, usar condicion siempre verdadera
     $sql = $sql . "1=1 ";
 }
 
 // Agregar ordenamiento (PDF pagina 9)
-$sql = $sql . "ORDER BY " . $orden;
+// MODIFICADO: Agregar prefijo 'c.' para campos de ContratoDeCuotas
+if ($orden === 'ID_Contratos' || $orden === 'DNI_Deudor' || $orden === 'Apellido_Nombres' || 
+    $orden === 'Monto_total_financiado' || $orden === 'FechaContrato' || $orden === 'NroDeCuotas') {
+    $sql = $sql . "ORDER BY c." . $orden;
+} else {
+    // Orden por defecto
+    $sql = $sql . "ORDER BY c.ID_Contratos";
+}
 
 try {
     // 4. PREPARACION, VINCULACION Y EJECUCION DE SENTENCIA SQL (PDF pagina 9 y 12-13)
@@ -121,6 +132,9 @@ while($fila = $stmt->fetch()) {
     }
     
     $objContrato->NroDeCuotas = $fila['NroDeCuotas'];
+    
+    // MODIFICADO: Agregar descripcion de cuotas
+    $objContrato->DescripcionCuotas = $fila['DescripcionCuotas'];
     
     // MODIFICACION: Codificar QR en base64 si existe 
     // (PDF Lectura y Actualizacion de Binarios pagina 4)

@@ -13,7 +13,7 @@
         
         html, body {
             height: 100%;
-            font-family: 'Times New Roman', Times, serif;
+            font-family: system-ui;
         }
         
         /* Contenedor principal */
@@ -193,7 +193,7 @@
         }
         
         .btModi:hover {
-            background-color: blue;
+            background-color: #138496;
         }
         
         .btBaja {
@@ -202,7 +202,7 @@
         }
         
         .btBaja:hover {
-            background-color: blue;
+            background-color: #138496;
         }
         
         /* Anchos especificos para columnas - OPTIMIZADOS para mostrar todas */
@@ -248,6 +248,7 @@
         .mensaje-carga {
             text-align: center;
             padding: 20px;
+            font-family: system-ui;
             font-style: italic;
             color: #666;
         }
@@ -256,6 +257,7 @@
         .ventanaModal {
             display: none;
             position: fixed;
+            font-family: system-ui;
             z-index: 1000;
             left: 0;
             top: 0;
@@ -375,6 +377,7 @@
         
         /* Ventana Modal para Ver QR */
         .modalQR {
+            font-family: system-ui;
             text-align: center;
         }
         
@@ -392,7 +395,7 @@
         /* Ventana Modal de Respuesta */
         #contenidoModalRespuesta {
             white-space: pre-wrap;
-            font-family: monospace;
+            font-family: system-ui;
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 4px;
@@ -405,6 +408,7 @@
         .modal-pdf-overlay {
             display: none;
             position: fixed;
+            font-family: system-ui;
             top: 0;
             left: 0;
             width: 100%;
@@ -735,12 +739,7 @@
                                 <th campo-dato="NroDeCuotas">
                                     <select id="filtroCuotas">
                                         <option value="">Todas</option>
-                                        <option value="01">Una</option>
-                                        <option value="02">Dos</option>
-                                        <option value="03">Tres</option>
-                                        <option value="04">Cuatro</option>
-                                        <option value="05">Cinco</option>
-                                        <option value="06">Seis</option>
+                                        <!-- Las opciones se cargan dinámicamente desde la base de datos -->
                                     </select>
                                 </th>
                                 <th campo-dato="QR"></th>
@@ -824,12 +823,7 @@
                             <label for="formContratosEntCuotasAlta">Numero de Cuotas: *</label>
                             <select id="formContratosEntCuotasAlta" name="NroDeCuotas" required>
                                 <option value="">Seleccione...</option>
-                                <option value="01">Una</option>
-                                <option value="02">Dos</option>
-                                <option value="03">Tres</option>
-                                <option value="04">Cuatro</option>
-                                <option value="05">Cinco</option>
-                                <option value="06">Seis</option>
+                                <!-- Las opciones se cargan dinámicamente desde la base de datos -->
                             </select>
                         </li>
                         <li>
@@ -880,12 +874,7 @@
                             <label for="formContratosEntCuotasModi">Numero de Cuotas: *</label>
                             <select id="formContratosEntCuotasModi" name="NroDeCuotas" required>
                                 <option value="">Seleccione...</option>
-                                <option value="01">Una</option>
-                                <option value="02">Dos</option>
-                                <option value="03">Tres</option>
-                                <option value="04">Cuatro</option>
-                                <option value="05">Cinco</option>
-                                <option value="06">Seis</option>
+                                <!-- Las opciones se cargan dinámicamente desde la base de datos -->
                             </select>
                         </li>
                         <li>
@@ -996,7 +985,7 @@
             })
             .then(data => {
                 // ALERT PARA DEBUG (comentar en produccion)
-                // alert("Datos recibidos del servidor:\n" + JSON.stringify(data, null, 2));
+                alert("Datos recibidos del servidor:\n" + JSON.stringify(data, null, 2));
                 
                 // Segunda promesa: procesar los datos recibidos
                 
@@ -1066,7 +1055,7 @@
                     // NroDeCuotas
                     objTd = document.createElement("td");
                     objTd.setAttribute("campo-dato", "NroDeCuotas");
-                    objTd.innerHTML = contrato.NroDeCuotas;
+                    objTd.innerHTML = contrato.DescripcionCuotas || contrato.NroDeCuotas;
                     objTr.appendChild(objTd);
                     
                     // QR - MODIFICADO: Boton para ver QR en lugar de mostrar base64
@@ -1218,29 +1207,345 @@
         }
         
         
-        // Funcion para modificar
-        function modificar(contrato) {
-            // Aqui se implementaria la logica para modificar
-            console.log("Modificar contrato: ", contrato);
-            // Por ahora, mostramos un mensaje
-            alert("Funcionalidad de modificar para el contrato: " + contrato.ID_Contratos);
+        
+        // ========================================
+        // FUNCIONES PARA MODALES
+        // ========================================
+        
+        // Funcion para abrir modal de alta
+        function abrirModalAlta() {
+            // Limpiar formulario
+            document.getElementById("formContratosAlta").reset();
+            
+            // Cargar opciones de cuotas en el select del formulario
+            cargarOpcionesCuotasFormulario('formContratosEntCuotasAlta');
+            
+            // Mostrar el modal
+            var modal = document.getElementById("ventanaModalFormularioAlta");
+            modal.style.visibility = "visible";
+            modal.style.display = "flex";
+            
+            // Desactivar contenedor principal
+            document.getElementById("contenedorGlobal").classList.remove("contenedor-activo");
+            document.getElementById("contenedorGlobal").classList.add("contenedor-desactivado");
         }
         
-        // Funcion para eliminar
+        // Funcion para cerrar modal de alta
+        function cerrarModalAlta() {
+            var modal = document.getElementById("ventanaModalFormularioAlta");
+            modal.style.visibility = "hidden";
+            modal.style.display = "none";
+            
+            // Activar contenedor principal
+            document.getElementById("contenedorGlobal").classList.remove("contenedor-desactivado");
+            document.getElementById("contenedorGlobal").classList.add("contenedor-activo");
+            
+            // Limpiar formulario
+            document.getElementById("formContratosAlta").reset();
+        }
+        
+        // Funcion para abrir modal de modificacion
+        function abrirModalModi(contrato) {
+            // Cargar opciones de cuotas en el select del formulario
+            cargarOpcionesCuotasFormulario('formContratosEntCuotasModi');
+            
+            // Cargar datos del contrato en el formulario
+            document.getElementById("formContratosEntIDModi").value = contrato.ID_Contratos;
+            document.getElementById("formContratosEntIDModiOriginal").value = contrato.ID_Contratos;
+            document.getElementById("formContratosEntDNIModi").value = contrato.DNI_Deudor;
+            document.getElementById("formContratosEntApellidoModi").value = contrato.Apellido_Nombres;
+            document.getElementById("formContratosEntMontoModi").value = contrato.Monto_total_financiado;
+            
+            // Convertir fecha de DD-MM-YYYY a YYYY-MM-DD para el input date
+            var fechaParts = contrato.FechaContrato.split('-');
+            var fechaISO = fechaParts[2] + '-' + fechaParts[1] + '-' + fechaParts[0];
+            document.getElementById("formContratosEntFechaModi").value = fechaISO;
+            
+            // Establecer el numero de cuotas
+            // Esperamos un poco para que se carguen las opciones
+            setTimeout(function() {
+                document.getElementById("formContratosEntCuotasModi").value = contrato.NroDeCuotas;
+            }, 300);
+            
+            // Mostrar el modal
+            var modal = document.getElementById("ventanaModalFormularioModi");
+            modal.style.visibility = "visible";
+            modal.style.display = "flex";
+            
+            // Desactivar contenedor principal
+            document.getElementById("contenedorGlobal").classList.remove("contenedor-activo");
+            document.getElementById("contenedorGlobal").classList.add("contenedor-desactivado");
+        }
+        
+        // Funcion para cerrar modal de modificacion
+        function cerrarModalModi() {
+            var modal = document.getElementById("ventanaModalFormularioModi");
+            modal.style.visibility = "hidden";
+            modal.style.display = "none";
+            
+            // Activar contenedor principal
+            document.getElementById("contenedorGlobal").classList.remove("contenedor-desactivado");
+            document.getElementById("contenedorGlobal").classList.add("contenedor-activo");
+            
+            // Limpiar formulario
+            document.getElementById("formContratosModi").reset();
+        }
+        
+        // Funcion para abrir modal de respuesta
+        function abrirModalRespuesta(titulo, mensaje) {
+            document.getElementById("encabezadoModalRespuesta").innerHTML = titulo;
+            document.getElementById("contenidoModalRespuesta").innerHTML = mensaje;
+            
+            var modal = document.getElementById("ventanaModalRespuesta");
+            modal.style.visibility = "visible";
+            modal.style.display = "flex";
+        }
+        
+        // Funcion para cerrar modal de respuesta
+        function cerrarModalRespuesta() {
+            var modal = document.getElementById("ventanaModalRespuesta");
+            modal.style.visibility = "hidden";
+            modal.style.display = "none";
+        }
+        
+        // ========================================
+        // FUNCIONES PARA CARGAR OPCIONES DE CUOTAS EN FORMULARIOS
+        // ========================================
+        
+        function cargarOpcionesCuotasFormulario(selectId) {
+            fetch('obtenerCuotas.php', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error al cargar cuotas:', data.mensaje);
+                    return;
+                }
+                
+                var select = document.getElementById(selectId);
+                
+                // Limpiar opciones actuales (excepto la primera "Seleccione...")
+                while(select.options.length > 1) {
+                    select.remove(1);
+                }
+                
+                // Agregar las opciones dinamicamente
+                data.cuotas.forEach(function(cuota) {
+                    var option = document.createElement("option");
+                    option.value = cuota.Cod;
+                    option.text = cuota.Descrip;
+                    select.add(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error al cargar opciones de cuotas:', error);
+            });
+        }
+        
+        // ========================================
+        // FUNCIONES DE ALTA, MODIFICACION Y BAJA
+        // ========================================
+        
+        // Funcion para modificar - IMPLEMENTACION COMPLETA
+        function modificar(contrato) {
+            console.log("Modificar contrato: ", contrato);
+            abrirModalModi(contrato);
+        }
+        
+        // Funcion para enviar formulario de modificacion
+        function enviarFormularioModi() {
+            var form = document.getElementById("formContratosModi");
+            
+            // Validar formulario
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Deshabilitar boton para evitar doble envio
+            var btnEnvio = document.getElementById("btEnvioFormModi");
+            btnEnvio.disabled = true;
+            btnEnvio.innerHTML = "Enviando...";
+            
+            // Crear FormData con los datos del formulario
+            var formData = new FormData(form);
+            
+            // Enviar datos al servidor
+            fetch('modi.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Habilitar boton nuevamente
+                btnEnvio.disabled = false;
+                btnEnvio.innerHTML = "Guardar Cambios";
+                
+                // Cerrar modal de modificacion
+                cerrarModalModi();
+                
+                // Mostrar respuesta del servidor
+                abrirModalRespuesta("Resultado de Modificacion", data);
+                
+                // Recargar la tabla para ver los cambios
+                cargaTabla();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Habilitar boton nuevamente
+                btnEnvio.disabled = false;
+                btnEnvio.innerHTML = "Guardar Cambios";
+                
+                // Mostrar error
+                abrirModalRespuesta("Error", "Error al modificar contrato: " + error.message);
+            });
+        }
+        
+        // Funcion para eliminar - IMPLEMENTACION COMPLETA
         function eliminar(idContrato) {
-            // Aqui se implementaria la logica para eliminar
             console.log("Eliminar contrato: " + idContrato);
-            // Por ahora, mostramos un mensaje de confirmacion
-            if (confirm("Esta seguro de que desea eliminar el contrato " + idContrato + "?")) {
-                alert("Contrato " + idContrato + " eliminado (simulado)");
+            
+            // Confirmar eliminacion
+            if (!confirm("¿Está seguro de que desea eliminar el contrato " + idContrato + "?\n\nEsta accion no se puede deshacer.")) {
+                return;
+            }
+            
+            // Crear FormData con el ID del contrato
+            var formData = new FormData();
+            formData.append('ID_Contratos', idContrato);
+            
+            // Enviar peticion de eliminacion al servidor
+            fetch('baja.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Mostrar respuesta del servidor
+                abrirModalRespuesta("Resultado de Baja", data);
+                
+                // Recargar la tabla para ver los cambios
+                cargaTabla();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                abrirModalRespuesta("Error", "Error al eliminar contrato: " + error.message);
+            });
+        }
+        
+        // Funcion para enviar formulario de alta
+        function enviarFormularioAlta() {
+            var form = document.getElementById("formContratosAlta");
+            
+            // Validar formulario
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Deshabilitar boton para evitar doble envio
+            var btnEnvio = document.getElementById("btEnvioFormAlta");
+            btnEnvio.disabled = true;
+            btnEnvio.innerHTML = "Enviando...";
+            
+            // Crear FormData con los datos del formulario
+            var formData = new FormData(form);
+            
+            // Enviar datos al servidor
+            fetch('alta.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                // Habilitar boton nuevamente
+                btnEnvio.disabled = false;
+                btnEnvio.innerHTML = "Enviar Alta";
+                
+                // Cerrar modal de alta
+                cerrarModalAlta();
+                
+                // Mostrar respuesta del servidor
+                abrirModalRespuesta("Resultado de Alta", data);
+                
+                // Recargar la tabla para ver el nuevo registro
+                cargaTabla();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Habilitar boton nuevamente
+                btnEnvio.disabled = false;
+                btnEnvio.innerHTML = "Enviar Alta";
+                
+                // Mostrar error
+                abrirModalRespuesta("Error", "Error al dar de alta contrato: " + error.message);
+            });
+        }
+        
+        // ========================================
+        // VALIDACION DE FORMULARIOS
+        // ========================================
+        
+        // Funcion para habilitar/deshabilitar boton de envio segun validez del formulario
+        function validarFormulario(formId, btnId) {
+            var form = document.getElementById(formId);
+            var btn = document.getElementById(btnId);
+            
+            if (form.checkValidity()) {
+                btn.disabled = false;
+            } else {
+                btn.disabled = true;
             }
         }
+        
         
         // ========================================
         // FUNCIONES AUXILIARES
         // ========================================
         
         // Funcion para vaciar la tabla
+        
+        // ========================================
+        // FUNCION PARA CARGAR OPCIONES DE CUOTAS
+        // ========================================
+        function cargarOpcionesCuotas() {
+            // Hacer peticion al servidor para obtener las cuotas
+            fetch('obtenerCuotas.php', {
+                method: 'GET'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error al cargar cuotas:', data.mensaje);
+                    return;
+                }
+                
+                // Obtener el select del filtro
+                var selectCuotas = document.getElementById("filtroCuotas");
+                
+                // Limpiar opciones actuales (excepto "Todas")
+                while(selectCuotas.options.length > 1) {
+                    selectCuotas.remove(1);
+                }
+                
+                // Agregar las opciones dinamicamente
+                data.cuotas.forEach(function(cuota) {
+                    var option = document.createElement("option");
+                    option.value = cuota.Cod;
+                    option.text = cuota.Descrip;
+                    selectCuotas.add(option);
+                });
+                
+                console.log('Opciones de cuotas cargadas correctamente');
+            })
+            .catch(error => {
+                console.error('Error al cargar opciones de cuotas:', error);
+            });
+        }
+
         function vaciarTabla() {
             var objTbDatos = document.getElementById("tbDatos");
             
@@ -1271,13 +1576,33 @@
             document.getElementById("cargarDatos").addEventListener("click", cargaTabla);
             document.getElementById("vaciarDatos").addEventListener("click", vaciarTabla);
             document.getElementById("limpiarFiltros").addEventListener("click", function() {
-                document.getElementById("filtroCuotas").value = "";
-                cargaTabla();
+            // Restablecer el orden al valor inicial
+            document.getElementById("orden").value = "ID_Contratos";
+            // Limpiar el filtro de cuotas
+            document.getElementById("filtroCuotas").value = "";
+            // Recargar la tabla con los valores por defecto
+            cargaTabla();
+        });
+            document.getElementById("altaRegistro").addEventListener("click", abrirModalAlta);
+            
+            // Configurar eventos de botones de modales
+            document.getElementById("btCerrarModalAlta").addEventListener("click", cerrarModalAlta);
+            document.getElementById("btCerrarModalModi").addEventListener("click", cerrarModalModi);
+            document.getElementById("btCerrarModalRespuesta").addEventListener("click", cerrarModalRespuesta);
+            
+            // Configurar eventos de envio de formularios
+            document.getElementById("btEnvioFormAlta").addEventListener("click", enviarFormularioAlta);
+            document.getElementById("btEnvioFormModi").addEventListener("click", enviarFormularioModi);
+            
+            // Configurar validacion de formularios
+            var formAlta = document.getElementById("formContratosAlta");
+            formAlta.addEventListener("input", function() {
+                validarFormulario('formContratosAlta', 'btEnvioFormAlta');
             });
-            document.getElementById("altaRegistro").addEventListener("click", function() {
-                // Aqui se implementaria la logica para abrir el formulario de alta
-                console.log("Abrir formulario de alta");
-                alert("Funcionalidad de alta de registro");
+            
+            var formModi = document.getElementById("formContratosModi");
+            formModi.addEventListener("input", function() {
+                validarFormulario('formContratosModi', 'btEnvioFormModi');
             });
             
             // Configurar eventos de ordenamiento en los encabezados
@@ -1295,6 +1620,9 @@
             
             // Inicializar la tabla vacia
             vaciarTabla();
+            
+            // Cargar opciones de cuotas desde la base de datos
+            cargarOpcionesCuotas();
         });
     </script>
 </body>
